@@ -23,4 +23,5 @@
 @property(nonatomic, readonly) id destinationObject;
 @property(nonatomic, readonly) id<WHIPath> preceedingPath;
 @property(nonatomic, readonly) NSDictionary *userInfo;
+
 @end
