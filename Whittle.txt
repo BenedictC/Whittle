@@ -1,0 +1,74 @@
+    $                 the root object/element
+    @                 the current object/element
+    . or []           child operator
+    n/a               parent operator
+    ..                recursive descent. JSONPath borrows this syntax from E4X.
+    *                 wildcard. All objects/elements regardless their names.
+    n/a               attribute access. JSON structures don't have attributes.
+    []                subscript operator. XPath uses it to iterate over element collections and for predicates. In Javascript and JSON it is the native array operator.
+    [,]               Union operator in XPath results in a combination of node sets. JSONPath allows alternate names or array indices as a set.
+    [start:end:step]  array slice operator borrowed from ES4.
+    ?()               applies a filter (script) expression.
+    ()                script expression, using the underlying script engine.
+    n/a               grouping in Xpath      
+
+    $.store.book[(@.length-1)].title -> @.length-1 -> NSString *(^)(id object){ return [object length]-1;}
+        
+    We have to use bracket form with expressions as object could have properties with name identical to the expression.
+
+    ?() -> NSPredicate evaluated on each value in the collection. //TODO: Pass in sub-expression, e.g. root, parent, siblings
+
+    ()  -> Block with signatures id<NSNumber *, NSString *>(^)(id object) the return value is then applied to the current node.
+    OR
+    ()  -> Block with signatures NSArray *(^)(id object) the return value is used appended to the result.
+
+
+  HOW DO WE KNOW WHEN AN EXPRESSION EVALUATES TO AN OBJECT OR AN COLLECTION?
+
+  
+    JSONPath:           HEAD_EXPR (BODY_EXPR)* 
+
+    HEAD_EXPR:          EXPR
+    BODY_EXPR:          
+    EXPR:               ENTITY_REF      | BRACKETED_EXPR
+  
+    ENTITY_REF:         ENTITY_NAME | ROOT_ENTITY
+    ROOT_ENTITY:        '$'
+    ENTITY_NAME:        alphanumeric-string
+    ENTITY_DELIMITER:   '.'
+        
+    BRACKETED_EXPR:     OPEN_BRACKET ( KEYED_SUBSCRIPT | INDEXED_SUBSCRIPT | ARRAY_SLICE | VALUE_PREDICATE | SUBSCRIPT_GENERATOR ) CLOSE_BRACKET
+
+    ENTITY_NAME_EXPR:   OPEN_QUOTE ENTITY_NAME CLOSE_QUOTE | ENTITY_NAME_EXPR
+    ARRAY_INDEX_EXPR:   number | INDEX_BLOCK
+    ARRAY_STEP_EXPR:    number ':' number ':' number
+    PREDICATE_EXPR:     ???
+    VALUE_EXPR:         ???
+
+  
+    OPEN_QUOTE:         '"'
+    CLOSE_QUOTE:        '"'
+    OPEN_BRACKET:       '['
+    CLOSE_BRACKET:      ']'
+
+
+	All objects are assumed to be collection. 
+
+collection.@FUNCTION_NAME
+$ROOT
+$ANCESTORS[]
+$CURRENT_NODE
+
+$VALUE
+$SUBSCRIPT
+
+
+
+An OCPath is a chain of functions. Each function takes ??? arguments and returns an object. The arguments that a function takes are:
+$object
+$ancestorResults
+$rootObject
+$var_args
+
+OCPath provides syntactical sugar for working with collections
+

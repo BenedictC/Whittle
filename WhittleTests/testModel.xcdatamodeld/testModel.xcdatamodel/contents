@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="2061" systemVersion="12E55" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="Collection" representedClassName="WHTCollection" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="elements" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Element" inverseName="collection" inverseEntity="Element" syncable="YES"/>
+    </entity>
+    <entity name="Element" representedClassName="WHTElement" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="collection" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Collection" inverseName="elements" inverseEntity="Collection" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="Collection" positionX="160" positionY="192" width="128" height="75"/>
+        <element name="Element" positionX="160" positionY="192" width="128" height="75"/>
+    </elements>
+</model>
