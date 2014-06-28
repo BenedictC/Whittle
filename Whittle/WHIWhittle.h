@@ -13,9 +13,9 @@
 
 
 /*
- WHIInvocationChainEvaluator is responsible for executing an array of WHIInvocations by looking up the function in
- bindings. WHIInvocationChainEvaluator is NOT responsible for creating the invocation array. The creation of the
- invocation array is handled by a subclass of WHIInvocationChainEvaluator, namely WHIWhittle.
+ WHIWhittle is responsible for executing an array of WHIInvocations by looking up the function in
+ environment. WHIWhittle is NOT responsible for creating the invocation array. The creation of the
+ invocation list is handled by the DSLFactory category of WHIWhittle.
 
 
  ## Whittle Queries
@@ -29,12 +29,12 @@
  Functions can take any number of arguments but are limited to the follow types:
  number:        Numbers are treated as doubles
  string:        Back tick (`) delimited. A back tick can be escaped with a slash (/). A literal slash is //.
- function:      Functions take the form as described previously, i.e., (functionName argument1, argument2) etc.
+ invocationList:      Functions take the form as described previously, i.e., (functionName argument1, argument2) etc.
  //TODO: variable:      Is this sensible? When would the value be resolved?
 
- Functions have access to the bindings dictionary.
+ Functions have access to the environment dictionary.
 
- The function implementations are retereived from the bindings dictionary when the query is execute. +defaultBindings
+ The function implementations are retereived from the environment dictionary when the query is execute. +defaultEnvironment
  contains the following functions:
 
  @"root":       Returns the root of the graph. Parameters:
@@ -47,19 +47,20 @@
  @"all":        Returns all edges that accessible from the current node (a recrusive call to endpoints). Parameters:
                  - None
  @"filter":     Returns all edges that match the supplied filter. Parameters:
-                 1. filter: string. The filter has access to the bindings. Bindings can be accessed by appending a $ to
-                   the binding name. Additional bindings are available: $EDGE_NAME, $EDGE_INDEX, $DESTINATION_NODE
+                 1. filter: string. The filter has access to the environment. Environment can be accessed by appending a $ to
+                   the binding name. Additional environment are available: $EDGE_NAME, $EDGE_INDEX, $DESTINATION_NODE
  @"pick":       Returns the first edge with name or index matching the supplied parameter:
-                 1. id: string/number. Returns the edge that matches the id.
-                //TODO: Allow this to be a list
+                 ... A list of string/number. Returns the edges that matches the string/numbers.
 
- @"union":      [WHIFunction unionOperation],
+ @"union":      Returns an edge set created by ???. Parameters:
+                 ... A list of invocationLists
+
 
 
  A concrete example:
  (pick `events`)(filter `$VALUE.date > $date`)
 
- Additional Functions can be defined by adding instance of WHIFunction to the bindings dictionary. The function can then
+ Additional Functions can be defined by adding instance of WHIFunction to the environment dictionary. The function can then
  be referenced by using its' dictionary key as the function name:
  (pick `results`)(odd)
  
@@ -88,30 +89,38 @@
 
  */
 
+#pragma mark - errors
+extern NSString * const WHIWhittleErrorDomain;
+
+enum {
+    WHIWhittleErrorInvalidInvocationArgument,
+    WHIWhittleErrorUnexpectValue,
+};
+
 
 
 @interface WHIWhittle : NSObject
 
-//TODO: Document the content of defaultBindings.
-+(NSDictionary *)defaultBindings;
+//TODO: Document the content of defaultEnvironment.
++(NSDictionary *)defaultEnvironment;
 
--(id)initWithInvocationChain:(NSArray *)invocations defaultBindings:(NSDictionary *)defaultBindings;
+-(id)initWithInvocationList:(NSArray *)invocations defaultEnvironment:(NSDictionary *)defaultEnvironment;
 @property(nonatomic, readonly) NSArray *invocations;
-@property(nonatomic, readonly) NSDictionary *defaultBindings;
+@property(nonatomic, readonly) NSDictionary *defaultEnvironment;
 
--(id)initWithInvocationChain:(NSArray *)invocations; //Convinence init which uses +defaultBindings
+-(id)initWithInvocationList:(NSArray *)invocations; //Convinence init which uses +defaultEnvironment
 /**
- Execute the invocation chain against an object.
+ Execute the invocation list against an object.
 
- @param rootObject the object to use as the root of the object graph that the invocation chain will be executed against.
- @param bindings a dictionary used to look up functions and value when the query is executed.
+ @param rootObject the object to use as the root of the object graph that the invocation list will be executed against.
+ @param environment a dictionary used to look up functions and value when the query is executed.
  @param outError an output error if the invocations could not be successfully executed. Errors can be of 2 types:
  1. Invalid function arguments. EG, a number when a string was expected.
  2. Invalid data. EG, the function expected an array but found a dictionary.
 
  @return The result of the query or nil if an error occured.
  */
--(id<WHIEdgeSet>)executeWithObject:(id)rootObject bindings:(NSDictionary *)bindings error:(NSError **)outError;
+-(id<WHIEdgeSet>)executeWithObject:(id)rootObject environment:(NSDictionary *)environment error:(NSError **)outError;
 
 @end
 
@@ -120,7 +129,7 @@
 @interface WHIWhittle (DSLFactory)
 
 /**
- Creates an instance of WHIWhittle from a Whittle query string. The instance is created with +defaultBindings.
+ Creates an instance of WHIWhittle from a Whittle query string. The instance is created with +defaultEnvironment.
 
  @param query A whittle query. See 'Whittle Queries' for details. If query is malformed then an invalid argument 
  exception is raised.
@@ -137,21 +146,21 @@
 
 /**
  Convience method for creating and executing a WHIWhittle instance. This method is equivilent to create a WHIWhittle
- instances with whittleWithQuery: and then calling executeWithObject:bindings:error: were object is the receiver.
+ instances with whittleWithQuery: and then calling executeWithObject:environment:error: were object is the receiver.
 
  @param query A whittle query. See 'Whittle Queries' for details. If query is malformed then an invalid argument
  exception is raised.
- @param bindings a dictionary used to look up functions and value when the query is executed.
+ @param environment a dictionary used to look up functions and value when the query is executed.
  @param outError an output error if the invocations could not be successfully executed. Errors can be of 2 types:
     1. Invalid function arguments. EG, a number when a string was expected.
     2. Invalid data. EG, the function expected an array but found a dictionary.
 
  @return The result of the query or nil if an error occured.
  */
--(id<WHIEdgeSet>)WHI_evaluateQuery:(NSString *)query bindings:(NSDictionary *)bindings error:(NSError **)outError;
+-(id<WHIEdgeSet>)WHI_evaluateQuery:(NSString *)query environment:(NSDictionary *)environment error:(NSError **)outError;
 
 /**
- This is equivilent to calling WHI_evaluateQuery:bindings:error: with an empty bindings dictionary and a NULL outError.
+ This is equivilent to calling WHI_evaluateQuery:environment:error: with an empty environment dictionary and a NULL outError.
 
  @param query A Whittle query.
 

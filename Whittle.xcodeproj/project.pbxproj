@@ -31,6 +31,7 @@
 		8297E617195DC47C0044D489 /* ParsingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 82C193E61815467A00A62CB5 /* ParsingTests.m */; };
 		8297E618195DC47C0044D489 /* PathOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 82932F4117A26EAE009AC871 /* PathOperationTests.m */; };
 		82C8D8C9195DBF0900BF9C1F /* test.json in Resources */ = {isa = PBXBuildFile; fileRef = 82C8D8C7195DBCD700BF9C1F /* test.json */; };
+		82CD8783195EED02002232EE /* WHIFunction+SetOperations.m in Sources */ = {isa = PBXBuildFile; fileRef = 82CD8782195EED02002232EE /* WHIFunction+SetOperations.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,11 +55,11 @@
 		8250899917C20E0500A2FF14 /* WHITestModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WHITestModel.h; sourceTree = "<group>"; };
 		8250899A17C20E0500A2FF14 /* WHITestModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WHITestModel.m; sourceTree = "<group>"; };
 		8250899C17C20E3A00A2FF14 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
-		82588E3317B3AEF100FA744F /* WHIFunction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WHIFunction.h; sourceTree = "<group>"; };
-		82588E3417B3AEF100FA744F /* WHIFunction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WHIFunction.m; sourceTree = "<group>"; };
+		82588E3317B3AEF100FA744F /* WHIFunction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = WHIFunction.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		82588E3417B3AEF100FA744F /* WHIFunction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = WHIFunction.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		826D35B517AF9F9F00F74FE7 /* WHIEdgeSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WHIEdgeSet.h; sourceTree = "<group>"; };
 		826D35B617AF9F9F00F74FE7 /* WHIEdgeSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WHIEdgeSet.m; sourceTree = "<group>"; };
-		8292CD9317AC0C7E00B0B678 /* WHIInvocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WHIInvocation.h; sourceTree = "<group>"; };
+		8292CD9317AC0C7E00B0B678 /* WHIInvocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = WHIInvocation.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		8292CD9417AC0C7E00B0B678 /* WHIInvocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WHIInvocation.m; sourceTree = "<group>"; };
 		82932F0D17A26EAE009AC871 /* Whittle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Whittle.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		82932F1017A26EAE009AC871 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -90,6 +91,8 @@
 		8297E611195DC4500044D489 /* Whittle Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Whittle Tests-Prefix.pch"; sourceTree = "<group>"; };
 		82C193E61815467A00A62CB5 /* ParsingTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = ParsingTests.m; path = ../WhittleTests/ParsingTests.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		82C8D8C7195DBCD700BF9C1F /* test.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = test.json; path = ../WhittleTests/test.json; sourceTree = "<group>"; };
+		82CD8781195EED02002232EE /* WHIFunction+SetOperations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WHIFunction+SetOperations.h"; sourceTree = "<group>"; };
+		82CD8782195EED02002232EE /* WHIFunction+SetOperations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = "WHIFunction+SetOperations.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -250,6 +253,8 @@
 				82588E3417B3AEF100FA744F /* WHIFunction.m */,
 				8292CD9317AC0C7E00B0B678 /* WHIInvocation.h */,
 				8292CD9417AC0C7E00B0B678 /* WHIInvocation.m */,
+				82CD8781195EED02002232EE /* WHIFunction+SetOperations.h */,
+				82CD8782195EED02002232EE /* WHIFunction+SetOperations.m */,
 				829787D417C0DA1400AF9B4A /* WHIWhittle.h */,
 				829787D517C0DA1400AF9B4A /* WHIWhittle.m */,
 				82AC574A195DF63B00DEE12D /* Parsing additions */,
@@ -359,6 +364,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				82932F1D17A26EAE009AC871 /* main.m in Sources */,
+				82CD8783195EED02002232EE /* WHIFunction+SetOperations.m in Sources */,
 				82932F2117A26EAE009AC871 /* BENAppDelegate.m in Sources */,
 				82932F2A17A26EAE009AC871 /* BENViewController.m in Sources */,
 				8292CD9517AC0C7E00B0B678 /* WHIInvocation.m in Sources */,

@@ -9,7 +9,6 @@
 #import "WHIFunction.h"
 
 #import "WHIEdgeSet.h"
-#import "WHIInvocation.h"
 
 #import <objc/runtime.h>
 
@@ -18,7 +17,7 @@
 @implementation WHIFunction
 
 #pragma mark - factory
-+(instancetype)functionWithBlock:(WHIEdgeOperation)block
++(instancetype)functionWithBlock:(WHIFunctionBlock)block
 {
     return [[self alloc] initWithBlock:block];
 }
@@ -26,7 +25,7 @@
 
 
 #pragma mark - instance life cycle
--(instancetype)initWithBlock:(WHIEdgeOperation)block
+-(instancetype)initWithBlock:(WHIFunctionBlock)block
 {
     self = [super init];
     if (self == nil) return nil;
@@ -39,11 +38,11 @@
 
 
 #pragma mark - execution
--(id<WHIEdgeSet>)executeWithEdge:(id<WHIEdge>)edge arguments:(NSArray *)arguments bindings:(NSDictionary *)bindings error:(NSError **)outError
+-(id<WHIEdgeSet>)executeWithEdge:(id<WHIEdge>)edge arguments:(NSArray *)arguments environment:(NSDictionary *)environment error:(NSError **)outError
 {
-    WHIEdgeOperation block = self.block;
+    WHIFunctionBlock block = self.block;
 
-    return block(edge, arguments, bindings, outError);
+    return block(edge, arguments, environment, outError);
 }
 
 @end
@@ -53,86 +52,6 @@
 if (ERR_POINTER != NULL) *ERR_POINTER = ERROR; \
 return nil; \
 } while (NO);
-
-
-#pragma mark - evaluation
-@implementation WHIFunction (Execution)
-
-+(WHIFunction *)executeInvocationOperation
-{
-    return [WHIFunction functionWithBlock:(^WHIEdgeSet *(id<WHIEdge> initialEdge, NSArray *arguments, NSDictionary *bindings, NSError **outError){
-        //Unpack arguments
-        id<WHIEdgeSet> inputEdgeSet = arguments[0];
-        WHIInvocation *invocation = arguments[1];
-        if (inputEdgeSet == nil || invocation == nil) FAIL(outError, [NSError errorWithDomain:@"" code:0 userInfo:nil]);
-
-        //Resolve the references
-        WHIFunction *function = bindings[invocation.functionName];
-        if (function == NULL) {
-            NSString *description = [NSString stringWithFormat:@"Function not found for binding named %@", invocation.functionName];
-            FAIL(outError, [NSError errorWithDomain:@"" code:0 userInfo:@{NSLocalizedDescriptionKey: description}]);
-        }
-
-        //Create output values
-        WHIEdgeSet *outputEdgeSet = [WHIEdgeSet new];
-        NSError *error;
-
-        //Apply the function to each path in the pathSet
-        for (id<WHIEdge> edge in inputEdgeSet) {
-
-            WHIEdgeSet *subEdgeSet = [function executeWithEdge:edge arguments:invocation.arguments bindings:bindings error:&error];
-            BOOL didError = (subEdgeSet == nil);
-            if (didError) {
-                if (outError != NULL) *outError = error;
-                return nil;
-            }
-
-            [outputEdgeSet addEdgesFromEdgeSet:subEdgeSet];
-        }
-
-        return outputEdgeSet;
-    })];
-}
-
-
-
-+(WHIFunction *)executeInvocationChainOperation
-{
-    return [WHIFunction functionWithBlock:(^WHIEdgeSet *(id<WHIEdge> initialEdge, NSArray *chainArguments, NSDictionary *bindings, NSError **outError){
-        //Unpack arguments
-        id rootObject = chainArguments[0];
-        NSArray *invocations = chainArguments[1];
-        WHIFunction *executeInvocationOperation = [WHIFunction executeInvocationOperation];
-        NSCParameterAssert(rootObject != nil && invocations != nil); //TODO: Replace with outError
-
-        //Prepare for the first invocation
-        NSDictionary *userInfo = nil; //TODO:
-        WHIEdgeSet *rootEdgeSet = [WHIEdgeSet edgeSetWithEdgeToDestinationObject:rootObject preceedingEdge:nil userInfo:userInfo];
-
-        //Invoke the function on every object return by the previous function.
-        NSMutableArray *edgeSetStack = [NSMutableArray arrayWithObject:rootEdgeSet];
-        WHIEdgeSet *preceedingEdgeSet = rootEdgeSet;
-        for (WHIInvocation *invocation in invocations) {
-
-            NSArray *invocationArguments = @[preceedingEdgeSet, invocation];
-            WHIEdgeSet *currentEdgeSet = [executeInvocationOperation executeWithEdge:nil arguments:invocationArguments bindings:bindings error:outError];
-            BOOL didError = (currentEdgeSet == nil);
-            if (didError) {
-                //TODO: Create wrapper error for outError.
-                return nil;
-            }
-            //TODO: Why do we store this? We never use the stack.
-            [edgeSetStack addObject:currentEdgeSet];
-
-            //Prep for the next invocation
-            preceedingEdgeSet = currentEdgeSet;
-        }
-        
-        return preceedingEdgeSet;
-    })];
-}
-
-@end
 
 
 
@@ -199,7 +118,7 @@ static NSString *keyForValueInDictionary(id value, NSDictionary *dictionary) {
 
 +(WHIFunction *)rootNodeOperation
 {
-    return [WHIFunction functionWithBlock:(^WHIEdgeSet *(id<WHIEdge> initialEdge, NSArray *arguments, NSDictionary *bindings, NSError **outError){
+    return [WHIFunction functionWithBlock:(^WHIEdgeSet *(id<WHIEdge> initialEdge, NSArray *arguments, NSDictionary *environment, NSError **outError){
 
         id<WHIEdge>edge = initialEdge;
 
@@ -213,7 +132,7 @@ static NSString *keyForValueInDictionary(id value, NSDictionary *dictionary) {
 
 +(WHIFunction *)preceedingNodeOperation
 {
-    return [WHIFunction functionWithBlock:(^WHIEdgeSet *(id<WHIEdge> edge, NSArray *arguments, NSDictionary *bindings, NSError **outError){
+    return [WHIFunction functionWithBlock:(^WHIEdgeSet *(id<WHIEdge> edge, NSArray *arguments, NSDictionary *environment, NSError **outError){
         id<WHIEdge> preceedingNode = edge.preceedingEdge;
 
         return (preceedingNode != nil) ? [WHIEdgeSet edgeSetWithEdge:preceedingNode] : [WHIEdgeSet new];
@@ -224,7 +143,7 @@ static NSString *keyForValueInDictionary(id value, NSDictionary *dictionary) {
 
 +(WHIFunction *)endpointNodesOperation
 {
-    return [WHIFunction functionWithBlock:(^WHIEdgeSet *(id<WHIEdge> edge, NSArray *arguments, NSDictionary *bindings, NSError **outError){
+    return [WHIFunction functionWithBlock:(^WHIEdgeSet *(id<WHIEdge> edge, NSArray *arguments, NSDictionary *environment, NSError **outError){
         id object = edge.destinationObject;
 
         //Handle dictionaries and mapTables to use the proper key.
@@ -272,7 +191,7 @@ static NSString *keyForValueInDictionary(id value, NSDictionary *dictionary) {
 
 +(WHIFunction *)allNodesOperation
 {
-    return [WHIFunction functionWithBlock:(^WHIEdgeSet *(id<WHIEdge> initialEdge, NSArray *arguments, NSDictionary *bindings, NSError **outError){
+    return [WHIFunction functionWithBlock:(^WHIEdgeSet *(id<WHIEdge> initialEdge, NSArray *arguments, NSDictionary *environment, NSError **outError){
 
         //Walk graph breadth first
         NSMutableArray *edgeStack = [NSMutableArray arrayWithObject:initialEdge];
@@ -285,7 +204,7 @@ static NSString *keyForValueInDictionary(id value, NSDictionary *dictionary) {
             [edgeStack removeObjectAtIndex:0];
 
             //Get all the edges that strart from currentEdge.node
-            WHIEdgeSet *edgeSet = [[WHIFunction endpointNodesOperation] executeWithEdge:currentEdge arguments:arguments bindings:bindings error:outError];
+            WHIEdgeSet *edgeSet = [[WHIFunction endpointNodesOperation] executeWithEdge:currentEdge arguments:arguments environment:environment error:outError];
             if (edgeSet == nil) return nil; //There was an error - endpointNodesOperation will have created the error object.
 
             //Add the results to returned node set
@@ -310,41 +229,63 @@ static NSString *keyForValueInDictionary(id value, NSDictionary *dictionary) {
 
 +(WHIFunction *)pickOperation
 {
-    return [WHIFunction functionWithBlock:(^WHIEdgeSet *(id<WHIEdge> edge, NSArray *arguments, NSDictionary *bindings, NSError **outError){
-        //Unpack arguments
-        id subscript = arguments[0];
+    return [WHIFunction functionWithBlock:(^WHIEdgeSet *(id<WHIEdge> edge, NSArray *arguments, NSDictionary *environment, NSError **outError){
+
         id object = edge.destinationObject;
+        WHIEdgeSet *outputEdgeSet = [WHIEdgeSet new];
+        for (id subscript in arguments) {
 
-        BOOL isNumericSubscript = [subscript isKindOfClass:[NSNumber class]];
-        if (isNumericSubscript) {
-            NSInteger idx = [subscript integerValue];
-
-            if ([object respondsToSelector:@selector(objectAtIndex:)]) {
-                id value = [object objectAtIndex:idx];
-                NSDictionary *userInfo = nil; //TODO:
-                return [WHIEdgeSet edgeSetWithEdgeToDestinationObject:value preceedingEdge:edge userInfo:userInfo];
-            }
-
-            if ([object respondsToSelector:@selector(countByEnumeratingWithState:objects:count:)]) {
-                NSInteger enumingIdx = 0;
-                for (id value in object) {
-                    if (enumingIdx == idx) {
-                        NSDictionary *userInfo = nil; //TODO:
-                        return [WHIEdgeSet edgeSetWithEdgeToDestinationObject:value preceedingEdge:edge userInfo:userInfo];
-                    }
-                    enumingIdx++;
+            //Attempt to pick the value from a string subscript
+            BOOL isStringSubscript = [subscript isKindOfClass:[NSString class]];
+            if (isStringSubscript) {
+                id key = subscript;
+                id value = [object valueForKey:key];
+                if (value != nil) {
+                    NSDictionary *userInfo = nil; //TODO:
+                    [outputEdgeSet addEdgeToDestinationObject:value preceedingEdge:edge userInfo:userInfo];
                 }
+                continue;
             }
 
-        } else {
-            id key = subscript;
-            id value = [object valueForKey:key];
-            NSDictionary *userInfo = nil; //TODO:
-            return [WHIEdgeSet edgeSetWithEdgeToDestinationObject:value preceedingEdge:edge userInfo:userInfo];
+            //Attempt to pick the value from a integer subscript
+            BOOL isIntegerSubscript = [subscript isKindOfClass:[NSNumber class]];
+            if (isIntegerSubscript) {
+                NSInteger idx = [subscript integerValue];
 
+                BOOL isIndexed = [object respondsToSelector:@selector(objectAtIndex:)];
+                if (isIndexed) {
+                    id value = [object objectAtIndex:idx];
+                    if (value != nil) {
+                        NSDictionary *userInfo = nil; //TODO:
+                        [outputEdgeSet addEdgeToDestinationObject:value preceedingEdge:edge userInfo:userInfo];
+                    }
+                    continue;
+                }
+
+                BOOL isEnumerable = [object respondsToSelector:@selector(countByEnumeratingWithState:objects:count:)];
+                if (isEnumerable) {
+                    id value = ^{
+                        NSInteger enumingIdx = 0;
+                        for (id value in object) {
+                            if (enumingIdx == idx) return value;
+                            enumingIdx++;
+                        }
+                        return (id)nil;
+                    }();
+                    if (value != nil) {
+                        NSDictionary *userInfo = nil; //TODO:
+                        [outputEdgeSet addEdgeToDestinationObject:value preceedingEdge:edge userInfo:userInfo];
+                    }
+                    continue;
+                }
+
+                //TODO: Error - object does not permit integer-based picking.
+            }
+
+            //TODO: Error - subscript is not a valid subscript type.
         }
 
-        return nil;
+        return outputEdgeSet;
     })];
 }
 
@@ -352,7 +293,7 @@ static NSString *keyForValueInDictionary(id value, NSDictionary *dictionary) {
 
 +(WHIFunction *)filterOperation
 {
-    return [WHIFunction functionWithBlock:(^WHIEdgeSet *(id<WHIEdge> edge, NSArray *arguments, NSDictionary *bindings,  NSError **outError){
+    return [WHIFunction functionWithBlock:(^WHIEdgeSet *(id<WHIEdge> edge, NSArray *arguments, NSDictionary *environment,  NSError **outError){
         //TODO: Convert these asserts to NSErrors
         NSCAssert(arguments.count == 1, @"Incorrect number of arguments. Filter expects arguments of type: [string].");
         //Unpack arguments
@@ -362,28 +303,28 @@ static NSString *keyForValueInDictionary(id value, NSDictionary *dictionary) {
         id object = edge.destinationObject;
         WHIEdgeSet *nodeSet = [WHIEdgeSet new];
         NSPredicate *predicate = [NSPredicate predicateWithFormat:predicateFormatString];
-        NSMutableDictionary *mergedBindings = [bindings mutableCopy];
+        NSMutableDictionary *mergedEnvironment = [environment mutableCopy];
         //TODO: Should these be log statements? Would it be better to fail and set the error?
-        if (mergedBindings[@"KEY"] != nil) {
-            NSLog(@"Bindings dictionary already contains a value for KEY. This value will be overwritten when evaluating filter predicate.");
+        if (mergedEnvironment[@"KEY"] != nil) {
+            NSLog(@"Environment dictionary already contains a value for KEY. This value will be overwritten when evaluating filter predicate.");
         }
-        if (mergedBindings[@"INDEX"] != nil) {
-            NSLog(@"Bindings dictionary already contains a value for INDEX. This value will be overwritten when evaluating filter predicate.");
+        if (mergedEnvironment[@"INDEX"] != nil) {
+            NSLog(@"Environment dictionary already contains a value for INDEX. This value will be overwritten when evaluating filter predicate.");
         }
-        if (mergedBindings[@"VALUE"] != nil) {
-            NSLog(@"Bindings dictionary already contains a value for VALUE. This value will be overwritten when evaluating filter predicate.");
+        if (mergedEnvironment[@"VALUE"] != nil) {
+            NSLog(@"Environment dictionary already contains a value for VALUE. This value will be overwritten when evaluating filter predicate.");
         }
 
         switch (objectTypeOfObject(object)) {
             case WHIFunctionObjectTypeKeyedCollection:
             case WHIFunctionObjectTypeArbitaryObject:
                 for (NSString *key in allKeysInObject(object)) {
-                    //add KEY and VALUE to bindings.
+                    //add KEY and VALUE to environment.
                     id value = [object valueForKey:key];
-                    mergedBindings[@"KEY"] = key;
-                    mergedBindings[@"INDEX"] = @(NSNotFound);
-                    mergedBindings[@"VALUE"] = value;
-                    BOOL isMatch = [predicate evaluateWithObject:object substitutionVariables:mergedBindings];
+                    mergedEnvironment[@"KEY"] = key;
+                    mergedEnvironment[@"INDEX"] = @(NSNotFound);
+                    mergedEnvironment[@"VALUE"] = value;
+                    BOOL isMatch = [predicate evaluateWithObject:object substitutionVariables:mergedEnvironment];
                     NSDictionary *userInfo = nil; //TODO: What do we put in the userInfo?
                     if (isMatch) [nodeSet addEdgeToDestinationObject:value preceedingEdge:edge userInfo:userInfo];
                 }
@@ -392,11 +333,11 @@ static NSString *keyForValueInDictionary(id value, NSDictionary *dictionary) {
             case WHIFunctionObjectTypeIndexedCollection: {
                 NSInteger idx = 0;
                 for (id value in object) {
-                    //add KEY and VALUE to bindings.
-                    mergedBindings[@"KEY"] = @"";
-                    mergedBindings[@"INDEX"] = @(idx);
-                    mergedBindings[@"VALUE"] = value;
-                    BOOL isMatch = [predicate evaluateWithObject:object substitutionVariables:mergedBindings];
+                    //add KEY and VALUE to environment.
+                    mergedEnvironment[@"KEY"] = @"";
+                    mergedEnvironment[@"INDEX"] = @(idx);
+                    mergedEnvironment[@"VALUE"] = value;
+                    BOOL isMatch = [predicate evaluateWithObject:object substitutionVariables:mergedEnvironment];
                     NSDictionary *userInfo = nil; //TODO: What do we put in the userInfo?
                     if (isMatch) [nodeSet addEdgeToDestinationObject:value preceedingEdge:edge userInfo:userInfo];
 
@@ -410,39 +351,5 @@ static NSString *keyForValueInDictionary(id value, NSDictionary *dictionary) {
         return nodeSet;
     })];
 }
-
-@end
-
-
-
-@implementation WHIFunction (SetOperations)
-
-+(WHIFunction *)unionOperation
-{
-    return [WHIFunction functionWithBlock:(^WHIEdgeSet *(id<WHIEdge> edge, NSArray *unionArguments, NSDictionary *bindings, NSError **outError){
-        id object = edge.destinationObject;
-        WHIEdgeSet *edgeSet = [WHIEdgeSet new];
-        WHIFunction *evaluateChainOperation = [WHIFunction executeInvocationChainOperation];
-
-        //TODO: Is it wise to loop rather than expecting explicitly 2 chains?
-        for (NSArray *invocationChain in unionArguments) {
-
-            NSArray *arguments = @[object, invocationChain];
-            WHIEdgeSet *childEdgeSet = [evaluateChainOperation executeWithEdge:nil arguments:arguments bindings:bindings error:outError];
-            BOOL didError = (childEdgeSet == nil);
-            if (didError) {
-                //TODO: Create wrapper error for outError.
-                return nil;
-            }
-
-            [edgeSet addEdgesFromEdgeSet:childEdgeSet];
-        }
-
-        return edgeSet;
-    })];
-}
-
-//TODO: +(WHIFunction *)minusOperation;       //Returns a set with the objects of the query removed from the receiver/
-//TODO: +(WHIFunction *)intersectOperation;
 
 @end

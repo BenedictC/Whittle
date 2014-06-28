@@ -28,7 +28,7 @@
     id expectResult = object;
     
     
-    id nodeSet = [whittle executeWithObject:object bindings:nil error:NULL];
+    id nodeSet = [whittle executeWithObject:object environment:nil error:NULL];
     id actualResult = [nodeSet lastObject];
     
     XCTAssertEqualObjects(actualResult, expectResult, @"Evaluation failed.");
@@ -48,7 +48,7 @@
     id expectResult = stLadocRoad;
     id object = places;
         
-    id<WHIEdgeSet> nodeSet = [whittle executeWithObject:object bindings:nil error:NULL];
+    id<WHIEdgeSet> nodeSet = [whittle executeWithObject:object environment:nil error:NULL];
     id actualResult = [nodeSet lastObject];
     
     XCTAssertEqualObjects(actualResult, expectResult, @"Evaluation failed.");
@@ -69,7 +69,7 @@
     id expectResult = stLadocRoad;
     id object = places;
     
-    id<WHIEdgeSet> nodeSet = [whittle executeWithObject:object bindings:nil error:NULL];
+    id<WHIEdgeSet> nodeSet = [whittle executeWithObject:object environment:nil error:NULL];
     id actualResult = [nodeSet lastObject];
     
     XCTAssertEqualObjects(actualResult, expectResult, @"Evaluation failed.");
@@ -90,7 +90,7 @@
     id expectResult = stLadocRoad;
     id object = places;
     
-    id<WHIEdgeSet> nodeSet = [whittle executeWithObject:object bindings:nil error:NULL];
+    id<WHIEdgeSet> nodeSet = [whittle executeWithObject:object environment:nil error:NULL];
     id actualResult = [nodeSet lastObject];
     
     XCTAssertEqualObjects(actualResult, expectResult, @"Evaluation failed.");
@@ -114,7 +114,7 @@
     id expectResult = @[object, object[@"array"], object[@"dict"], @"a", @"b", @"c",  @(1), @(3), @(2)];
 
     
-    id<WHIEdgeSet> nodeSet = [whittle executeWithObject:object bindings:nil error:NULL];
+    id<WHIEdgeSet> nodeSet = [whittle executeWithObject:object environment:nil error:NULL];
     id actualResult = [nodeSet objects];
     
     XCTAssertEqualObjects(actualResult, expectResult, @"Evaluation failed.");
@@ -130,7 +130,7 @@
     id expectResult = @"Bingo!";         
     id object = @{@"keyName": expectResult};
 
-    id actualResult = [[whittle executeWithObject:object bindings:nil error:NULL] lastObject];
+    id actualResult = [[whittle executeWithObject:object environment:nil error:NULL] lastObject];
 
     XCTAssertEqualObjects(actualResult, expectResult, @"Evaluation failed.");
 }
@@ -143,7 +143,7 @@
     
     id expectResult = @"Bingo!";         
     id object = @[@"arf", expectResult];
-    id actualResult = [[whittle executeWithObject:object bindings:nil error:NULL] lastObject];
+    id actualResult = [[whittle executeWithObject:object environment:nil error:NULL] lastObject];
     
     XCTAssertEqualObjects(actualResult, expectResult, @"Evaluation failed.");
 }
@@ -162,7 +162,7 @@
                   @"surname": expectResult
                  };
     
-    id <WHIEdgeSet> nodeSet = [whittle executeWithObject:object bindings:nil error:NULL];
+    id <WHIEdgeSet> nodeSet = [whittle executeWithObject:object environment:nil error:NULL];
     id actualResult = [nodeSet lastObject];
     
     XCTAssertEqualObjects(actualResult, expectResult, @"Evaluation failed.");
@@ -180,7 +180,7 @@
                   @"1": @"b",
                   @"`": @"c"};
 
-    id <WHIEdgeSet> nodeSet = [whittle executeWithObject:object bindings:nil error:NULL];
+    id <WHIEdgeSet> nodeSet = [whittle executeWithObject:object environment:nil error:NULL];
     id actualResult = [nodeSet objects];
 
     XCTAssertEqualObjects(actualResult, expectResult, @"Evaluation failed.");

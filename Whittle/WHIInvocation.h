@@ -7,13 +7,20 @@
 //
 
 #import <Foundation/Foundation.h>
+@protocol WHIEdge, WHIEdgeSet;
+
 
 
 /*
  
- WHIInvocation is a refrence for a function and arguments to pass to the function. WHIInvocation does not provide a
- pointer to an actual function implementation (e.g. WHIFunction). It is up to the calling code to resolve
- functionName to an actual function implementation. This is so that bindings can be performed as late as possible.
+ WHIInvocation is responsible for executing functions. An instance has a reference to a function and the
+ arguments to pass to the function. The function does not store the actual function. When the invocation is invoked it 
+ looks up the function in the environment.
+ 
+ The function is invoked on each edge in the input set and the results are unioned together as the result.
+ 
+ The class object provides a method execute a list of invocations which passes the output of an invocation onto the next
+ invocation in the list.
 
  */
 
@@ -25,5 +32,8 @@
 @property(nonatomic, readonly) NSString *functionName;
 @property(nonatomic, readonly) NSArray *arguments;
 
-@end
+-(id<WHIEdgeSet>)invokeWithEdgeSet:(id<WHIEdgeSet>)inputEdgeSet environment:(NSDictionary *)environment error:(NSError **)outError;
 
++(id<WHIEdgeSet>)executeInvocationList:(NSArray *)invocations edgeSet:(id<WHIEdgeSet>)edgeSet environment:(NSDictionary *)environment error:(NSError **)outError;
+
+@end

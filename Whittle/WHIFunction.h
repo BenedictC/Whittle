@@ -10,8 +10,10 @@
 
 /*
  
- WHIFunction is a wrapper for blocks. Blocks cannot be compared with isEqual: (the result is always NO). Wrapping a
- block allows them to be compared.
+ WHIFunction represent the functions used when executing a Whittle query. WHIFunction essentially wrap a Blocks and 
+ provides a method to execute it. Using WHIFuction instead of a plain block means that instances can be compare with 
+ isEqual: which is not possible with blocks (the result is always NO). WHIFunction also provides class methods for
+ common operations.
 
  */
 
@@ -23,12 +25,12 @@
 
  @param edge      The edge object that the function will be applied to.
  @param arguments An array of objects used by the function. The values are specified per function.
- @param bindings  Dictionary that some function use to fetch values and also contains functions.
+ @param environment  Dictionary that some function use to fetch values and also contains functions.
  @param error     Error giving reason for invocation failure.
 
  @return An object conforming to WHIEdgeSet.
  */
-typedef id<WHIEdgeSet> (^WHIEdgeOperation)(id<WHIEdge> edge, NSArray *arguments, NSDictionary *bindings, NSError **error);
+typedef id<WHIEdgeSet> (^WHIFunctionBlock)(id<WHIEdge> edge, NSArray *arguments, NSDictionary *environment, NSError **error);
 
 
 
@@ -36,20 +38,12 @@ typedef id<WHIEdgeSet> (^WHIEdgeOperation)(id<WHIEdge> edge, NSArray *arguments,
 
 @interface WHIFunction : NSObject
 
-+(instancetype)functionWithBlock:(WHIEdgeOperation)block;
--(instancetype)initWithBlock:(WHIEdgeOperation)block;
-@property(nonatomic, copy, readonly) WHIEdgeOperation block;
++(instancetype)functionWithBlock:(WHIFunctionBlock)block;
+-(instancetype)initWithBlock:(WHIFunctionBlock)block;
+@property(nonatomic, copy, readonly) WHIFunctionBlock block;
 
--(id<WHIEdgeSet>)executeWithEdge:(id<WHIEdge>)edge arguments:(NSArray *)arguments bindings:(NSDictionary *)bindings error:(NSError **)outError;
+-(id<WHIEdgeSet>)executeWithEdge:(id<WHIEdge>)edge arguments:(NSArray *)arguments environment:(NSDictionary *)environment error:(NSError **)outError;
 
-@end
-
-
-
-@interface WHIFunction (Execution)
-//TODO: Document what the arguments are for the operations
-//+(WHIFunction *)executeInvocationOperation;    //@[preceedingEdgeSet, invocation];
-+(WHIFunction *)executeInvocationChainOperation; //@[rootObject, self.invocations];
 @end
 
 
@@ -90,15 +84,5 @@ typedef id<WHIEdgeSet> (^WHIEdgeOperation)(id<WHIEdge> edge, NSArray *arguments,
  Arguments form: nil
  */
 +(WHIFunction *)pickOperation;
-
-@end
-
-
-
-@interface WHIFunction (SetOperations)
-
-+(WHIFunction *)unionOperation;          //Returns the union of two nodeSets.
-//TODO: +(WHIFunction *)minusOperation;       //Returns a set with the objects of the query removed from the receiver/
-//TODO: +(WHIFunction *)intersectOperation;
 
 @end
