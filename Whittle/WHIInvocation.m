@@ -39,7 +39,7 @@
 #pragma mark - properties
 -(NSString *)description
 {
-    return [NSString stringWithFormat:@"<%@> - functionName = %@, args = %@", NSStringFromClass([self class]), self.functionName, [self.arguments description]];
+    return [NSString stringWithFormat:@"<%@: %p> {functionName = %@, arguments = %@}", NSStringFromClass([self class]), self, self.functionName, [self.arguments description]];
 }
 
 

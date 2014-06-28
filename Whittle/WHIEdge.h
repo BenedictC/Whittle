@@ -1,5 +1,5 @@
 //
-//  WHIPath.h
+//  WHIEdge.h
 //  Whittle
 //
 //  Created by Benedict Cohen on 18/08/2013.
@@ -7,21 +7,21 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "WHIPathProtocols.h"
+#import "WHIEdgeProtocols.h"
 
 
 
 /*
 
- TODO: Document WHIPath.
+ TODO: Document WHIEdge.
 
  */
 
-@interface WHIPath : NSObject <WHIPath>
+@interface WHIEdge : NSObject <WHIEdge>
 
--(id)initWithDestinationObject:(id)object preceedingPath:(id<WHIPath>)preceedingPath userInfo:(NSDictionary *)userInfo;
+-(id)initWithDestinationObject:(id)object preceedingEdge:(id<WHIEdge>)preceedingEdge userInfo:(NSDictionary *)userInfo;
 @property(nonatomic, readonly) id destinationObject;
-@property(nonatomic, readonly) id<WHIPath> preceedingPath;
+@property(nonatomic, readonly) id<WHIEdge> preceedingEdge;
 @property(nonatomic, readonly) NSDictionary *userInfo;
 
 @end

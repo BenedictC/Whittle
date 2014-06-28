@@ -7,14 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		82418AB417D6401100404E68 /* WHTCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 82418AB317D6401100404E68 /* WHTCollection.m */; };
-		82418AB717D6401100404E68 /* WHTElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 82418AB617D6401100404E68 /* WHTElement.m */; };
 		824D1A2517D4C8E900E6A1B3 /* NSScanner+WhittleAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 824D1A2417D4C8E900E6A1B3 /* NSScanner+WhittleAdditions.m */; };
-		8250899817C20D5100A2FF14 /* testModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8250899617C20D5100A2FF14 /* testModel.xcdatamodeld */; };
-		8250899B17C20E0500A2FF14 /* WHITestModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8250899A17C20E0500A2FF14 /* WHITestModel.m */; };
-		8250899D17C20E3A00A2FF14 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8250899C17C20E3A00A2FF14 /* CoreData.framework */; };
 		82588E3517B3AEF100FA744F /* WHIFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = 82588E3417B3AEF100FA744F /* WHIFunction.m */; };
-		826D35B717AF9F9F00F74FE7 /* WHIPathSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 826D35B617AF9F9F00F74FE7 /* WHIPathSet.m */; };
+		826D35B717AF9F9F00F74FE7 /* WHIEdgeSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 826D35B617AF9F9F00F74FE7 /* WHIEdgeSet.m */; };
 		8292CD9517AC0C7E00B0B678 /* WHIInvocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8292CD9417AC0C7E00B0B678 /* WHIInvocation.m */; };
 		82932F1117A26EAE009AC871 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 82932F1017A26EAE009AC871 /* UIKit.framework */; };
 		82932F1317A26EAE009AC871 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 82932F1217A26EAE009AC871 /* Foundation.framework */; };
@@ -27,25 +22,24 @@
 		82932F2717A26EAE009AC871 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 82932F2617A26EAE009AC871 /* Default-568h@2x.png */; };
 		82932F2A17A26EAE009AC871 /* BENViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 82932F2917A26EAE009AC871 /* BENViewController.m */; };
 		82932F2D17A26EAE009AC871 /* BENViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 82932F2B17A26EAE009AC871 /* BENViewController.xib */; };
-		82932F3517A26EAE009AC871 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 82932F3417A26EAE009AC871 /* SenTestingKit.framework */; };
-		82932F3617A26EAE009AC871 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 82932F1017A26EAE009AC871 /* UIKit.framework */; };
-		82932F3717A26EAE009AC871 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 82932F1217A26EAE009AC871 /* Foundation.framework */; };
-		82932F3F17A26EAE009AC871 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 82932F3D17A26EAE009AC871 /* InfoPlist.strings */; };
-		82932F4217A26EAE009AC871 /* PathOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 82932F4117A26EAE009AC871 /* PathOperationTests.m */; };
-		82932F4D17A26ED3009AC871 /* WHIInvocationChainEvaluator.m in Sources */ = {isa = PBXBuildFile; fileRef = 82932F4C17A26ED3009AC871 /* WHIInvocationChainEvaluator.m */; };
-		8296312017BFE65C00943F84 /* WHIFunction+WHIPathOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8296311F17BFE65C00943F84 /* WHIFunction+WHIPathOperation.m */; };
-		829787D317C0D47100AF9B4A /* WHIPath.m in Sources */ = {isa = PBXBuildFile; fileRef = 829787D217C0D47100AF9B4A /* WHIPath.m */; };
+		829787D317C0D47100AF9B4A /* WHIEdge.m in Sources */ = {isa = PBXBuildFile; fileRef = 829787D217C0D47100AF9B4A /* WHIEdge.m */; };
 		829787D617C0DA1400AF9B4A /* WHIWhittle.m in Sources */ = {isa = PBXBuildFile; fileRef = 829787D517C0DA1400AF9B4A /* WHIWhittle.m */; };
-		82C193E71815467A00A62CB5 /* ParsingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 82C193E61815467A00A62CB5 /* ParsingTests.m */; };
+		8297E606195DC4500044D489 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8297E605195DC4500044D489 /* XCTest.framework */; };
+		8297E607195DC4500044D489 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 82932F1217A26EAE009AC871 /* Foundation.framework */; };
+		8297E608195DC4500044D489 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 82932F1017A26EAE009AC871 /* UIKit.framework */; };
+		8297E60E195DC4500044D489 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8297E60C195DC4500044D489 /* InfoPlist.strings */; };
+		8297E617195DC47C0044D489 /* ParsingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 82C193E61815467A00A62CB5 /* ParsingTests.m */; };
+		8297E618195DC47C0044D489 /* PathOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 82932F4117A26EAE009AC871 /* PathOperationTests.m */; };
+		82C8D8C9195DBF0900BF9C1F /* test.json in Resources */ = {isa = PBXBuildFile; fileRef = 82C8D8C7195DBCD700BF9C1F /* test.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		82932F3817A26EAE009AC871 /* PBXContainerItemProxy */ = {
+		8297E612195DC4500044D489 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 82932F0517A26EAE009AC871 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 82932F0C17A26EAE009AC871;
-			remoteInfo = JSONPath;
+			remoteInfo = Whittle;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -62,8 +56,8 @@
 		8250899C17C20E3A00A2FF14 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		82588E3317B3AEF100FA744F /* WHIFunction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WHIFunction.h; sourceTree = "<group>"; };
 		82588E3417B3AEF100FA744F /* WHIFunction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WHIFunction.m; sourceTree = "<group>"; };
-		826D35B517AF9F9F00F74FE7 /* WHIPathSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WHIPathSet.h; sourceTree = "<group>"; };
-		826D35B617AF9F9F00F74FE7 /* WHIPathSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WHIPathSet.m; sourceTree = "<group>"; };
+		826D35B517AF9F9F00F74FE7 /* WHIEdgeSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WHIEdgeSet.h; sourceTree = "<group>"; };
+		826D35B617AF9F9F00F74FE7 /* WHIEdgeSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WHIEdgeSet.m; sourceTree = "<group>"; };
 		8292CD9317AC0C7E00B0B678 /* WHIInvocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WHIInvocation.h; sourceTree = "<group>"; };
 		8292CD9417AC0C7E00B0B678 /* WHIInvocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WHIInvocation.m; sourceTree = "<group>"; };
 		82932F0D17A26EAE009AC871 /* Whittle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Whittle.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -82,21 +76,20 @@
 		82932F2817A26EAE009AC871 /* BENViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BENViewController.h; sourceTree = "<group>"; };
 		82932F2917A26EAE009AC871 /* BENViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BENViewController.m; sourceTree = "<group>"; };
 		82932F2C17A26EAE009AC871 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/BENViewController.xib; sourceTree = "<group>"; };
-		82932F3317A26EAE009AC871 /* WhittleTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WhittleTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		82932F3417A26EAE009AC871 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
-		82932F3C17A26EAE009AC871 /* WhittleTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "WhittleTests-Info.plist"; sourceTree = "<group>"; };
-		82932F3E17A26EAE009AC871 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		82932F4117A26EAE009AC871 /* PathOperationTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PathOperationTests.m; sourceTree = "<group>"; };
-		82932F4B17A26ED3009AC871 /* WHIInvocationChainEvaluator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WHIInvocationChainEvaluator.h; sourceTree = "<group>"; };
-		82932F4C17A26ED3009AC871 /* WHIInvocationChainEvaluator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WHIInvocationChainEvaluator.m; sourceTree = "<group>"; };
-		8296311E17BFE65C00943F84 /* WHIFunction+WHIPathOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WHIFunction+WHIPathOperation.h"; sourceTree = "<group>"; };
-		8296311F17BFE65C00943F84 /* WHIFunction+WHIPathOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WHIFunction+WHIPathOperation.m"; sourceTree = "<group>"; };
-		829787D017C0D44300AF9B4A /* WHIPathProtocols.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WHIPathProtocols.h; sourceTree = "<group>"; };
-		829787D117C0D47100AF9B4A /* WHIPath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WHIPath.h; sourceTree = "<group>"; };
-		829787D217C0D47100AF9B4A /* WHIPath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WHIPath.m; sourceTree = "<group>"; };
-		829787D417C0DA1400AF9B4A /* WHIWhittle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WHIWhittle.h; sourceTree = "<group>"; };
-		829787D517C0DA1400AF9B4A /* WHIWhittle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WHIWhittle.m; sourceTree = "<group>"; };
-		82C193E61815467A00A62CB5 /* ParsingTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ParsingTests.m; sourceTree = "<group>"; };
+		82932F4117A26EAE009AC871 /* PathOperationTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = PathOperationTests.m; path = ../WhittleTests/PathOperationTests.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		829787D017C0D44300AF9B4A /* WHIEdgeProtocols.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WHIEdgeProtocols.h; sourceTree = "<group>"; };
+		829787D117C0D47100AF9B4A /* WHIEdge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WHIEdge.h; sourceTree = "<group>"; };
+		829787D217C0D47100AF9B4A /* WHIEdge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WHIEdge.m; sourceTree = "<group>"; };
+		829787D417C0DA1400AF9B4A /* WHIWhittle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = WHIWhittle.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		829787D517C0DA1400AF9B4A /* WHIWhittle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = WHIWhittle.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		8297E604195DC4500044D489 /* Whittle Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Whittle Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8297E605195DC4500044D489 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		8297E60B195DC4500044D489 /* Whittle Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Whittle Tests-Info.plist"; sourceTree = "<group>"; };
+		8297E60D195DC4500044D489 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		8297E611195DC4500044D489 /* Whittle Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Whittle Tests-Prefix.pch"; sourceTree = "<group>"; };
+		82C193E61815467A00A62CB5 /* ParsingTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = ParsingTests.m; path = ../WhittleTests/ParsingTests.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		82C8D8C7195DBCD700BF9C1F /* test.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = test.json; path = ../WhittleTests/test.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,14 +103,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		82932F2F17A26EAE009AC871 /* Frameworks */ = {
+		8297E601195DC4500044D489 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8250899D17C20E3A00A2FF14 /* CoreData.framework in Frameworks */,
-				82932F3517A26EAE009AC871 /* SenTestingKit.framework in Frameworks */,
-				82932F3617A26EAE009AC871 /* UIKit.framework in Frameworks */,
-				82932F3717A26EAE009AC871 /* Foundation.framework in Frameworks */,
+				8297E606195DC4500044D489 /* XCTest.framework in Frameworks */,
+				8297E608195DC4500044D489 /* UIKit.framework in Frameworks */,
+				8297E607195DC4500044D489 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -140,7 +132,7 @@
 			isa = PBXGroup;
 			children = (
 				82932F1617A26EAE009AC871 /* Whittle */,
-				82932F3A17A26EAE009AC871 /* WhittleTests */,
+				8297E609195DC4500044D489 /* Whittle Tests */,
 				82932F0F17A26EAE009AC871 /* Frameworks */,
 				82932F0E17A26EAE009AC871 /* Products */,
 			);
@@ -150,7 +142,7 @@
 			isa = PBXGroup;
 			children = (
 				82932F0D17A26EAE009AC871 /* Whittle.app */,
-				82932F3317A26EAE009AC871 /* WhittleTests.octest */,
+				8297E604195DC4500044D489 /* Whittle Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -162,6 +154,7 @@
 				82932F1217A26EAE009AC871 /* Foundation.framework */,
 				82932F1417A26EAE009AC871 /* CoreGraphics.framework */,
 				82932F3417A26EAE009AC871 /* SenTestingKit.framework */,
+				8297E605195DC4500044D489 /* XCTest.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -190,24 +183,47 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		82932F3A17A26EAE009AC871 /* WhittleTests */ = {
+		8297E609195DC4500044D489 /* Whittle Tests */ = {
 			isa = PBXGroup;
 			children = (
 				82C193E61815467A00A62CB5 /* ParsingTests.m */,
 				82932F4117A26EAE009AC871 /* PathOperationTests.m */,
 				82C193E8181546F100A62CB5 /* TODO: Core Data Testing */,
-				82932F3B17A26EAE009AC871 /* Supporting Files */,
+				82C8D8C7195DBCD700BF9C1F /* test.json */,
+				8297E60A195DC4500044D489 /* Supporting Files */,
 			);
-			path = WhittleTests;
+			path = "Whittle Tests";
 			sourceTree = "<group>";
 		};
-		82932F3B17A26EAE009AC871 /* Supporting Files */ = {
+		8297E60A195DC4500044D489 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				82932F3C17A26EAE009AC871 /* WhittleTests-Info.plist */,
-				82932F3D17A26EAE009AC871 /* InfoPlist.strings */,
+				8297E60B195DC4500044D489 /* Whittle Tests-Info.plist */,
+				8297E60C195DC4500044D489 /* InfoPlist.strings */,
+				8297E611195DC4500044D489 /* Whittle Tests-Prefix.pch */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		82AC5749195DCD6700DEE12D /* Result objects */ = {
+			isa = PBXGroup;
+			children = (
+				829787D017C0D44300AF9B4A /* WHIEdgeProtocols.h */,
+				829787D117C0D47100AF9B4A /* WHIEdge.h */,
+				829787D217C0D47100AF9B4A /* WHIEdge.m */,
+				826D35B517AF9F9F00F74FE7 /* WHIEdgeSet.h */,
+				826D35B617AF9F9F00F74FE7 /* WHIEdgeSet.m */,
+			);
+			name = "Result objects";
+			sourceTree = "<group>";
+		};
+		82AC574A195DF63B00DEE12D /* Parsing additions */ = {
+			isa = PBXGroup;
+			children = (
+				824D1A2317D4C8E900E6A1B3 /* NSScanner+WhittleAdditions.h */,
+				824D1A2417D4C8E900E6A1B3 /* NSScanner+WhittleAdditions.m */,
+			);
+			name = "Parsing additions";
 			sourceTree = "<group>";
 		};
 		82C193E8181546F100A62CB5 /* TODO: Core Data Testing */ = {
@@ -223,28 +239,20 @@
 				8250899C17C20E3A00A2FF14 /* CoreData.framework */,
 			);
 			name = "TODO: Core Data Testing";
+			path = ../WhittleTests;
 			sourceTree = "<group>";
 		};
 		82C82BE117D134BC003A55F8 /* Whittle */ = {
 			isa = PBXGroup;
 			children = (
+				82AC5749195DCD6700DEE12D /* Result objects */,
 				82588E3317B3AEF100FA744F /* WHIFunction.h */,
 				82588E3417B3AEF100FA744F /* WHIFunction.m */,
 				8292CD9317AC0C7E00B0B678 /* WHIInvocation.h */,
 				8292CD9417AC0C7E00B0B678 /* WHIInvocation.m */,
-				829787D017C0D44300AF9B4A /* WHIPathProtocols.h */,
-				829787D117C0D47100AF9B4A /* WHIPath.h */,
-				829787D217C0D47100AF9B4A /* WHIPath.m */,
-				826D35B517AF9F9F00F74FE7 /* WHIPathSet.h */,
-				826D35B617AF9F9F00F74FE7 /* WHIPathSet.m */,
-				8296311E17BFE65C00943F84 /* WHIFunction+WHIPathOperation.h */,
-				8296311F17BFE65C00943F84 /* WHIFunction+WHIPathOperation.m */,
-				82932F4B17A26ED3009AC871 /* WHIInvocationChainEvaluator.h */,
-				82932F4C17A26ED3009AC871 /* WHIInvocationChainEvaluator.m */,
 				829787D417C0DA1400AF9B4A /* WHIWhittle.h */,
 				829787D517C0DA1400AF9B4A /* WHIWhittle.m */,
-				824D1A2317D4C8E900E6A1B3 /* NSScanner+WhittleAdditions.h */,
-				824D1A2417D4C8E900E6A1B3 /* NSScanner+WhittleAdditions.m */,
+				82AC574A195DF63B00DEE12D /* Parsing additions */,
 			);
 			name = Whittle;
 			sourceTree = "<group>";
@@ -269,24 +277,23 @@
 			productReference = 82932F0D17A26EAE009AC871 /* Whittle.app */;
 			productType = "com.apple.product-type.application";
 		};
-		82932F3217A26EAE009AC871 /* WhittleTests */ = {
+		8297E603195DC4500044D489 /* Whittle Tests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 82932F4817A26EAE009AC871 /* Build configuration list for PBXNativeTarget "WhittleTests" */;
+			buildConfigurationList = 8297E614195DC4500044D489 /* Build configuration list for PBXNativeTarget "Whittle Tests" */;
 			buildPhases = (
-				82932F2E17A26EAE009AC871 /* Sources */,
-				82932F2F17A26EAE009AC871 /* Frameworks */,
-				82932F3017A26EAE009AC871 /* Resources */,
-				82932F3117A26EAE009AC871 /* ShellScript */,
+				8297E600195DC4500044D489 /* Sources */,
+				8297E601195DC4500044D489 /* Frameworks */,
+				8297E602195DC4500044D489 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				82932F3917A26EAE009AC871 /* PBXTargetDependency */,
+				8297E613195DC4500044D489 /* PBXTargetDependency */,
 			);
-			name = WhittleTests;
-			productName = JSONPathTests;
-			productReference = 82932F3317A26EAE009AC871 /* WhittleTests.octest */;
-			productType = "com.apple.product-type.bundle";
+			name = "Whittle Tests";
+			productName = "Whittle Tests";
+			productReference = 8297E604195DC4500044D489 /* Whittle Tests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
@@ -295,8 +302,14 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = WHI;
+				LastTestingUpgradeCheck = 0510;
 				LastUpgradeCheck = 0460;
 				ORGANIZATIONNAME = "Benedict Cohen";
+				TargetAttributes = {
+					8297E603195DC4500044D489 = {
+						TestTargetID = 82932F0C17A26EAE009AC871;
+					};
+				};
 			};
 			buildConfigurationList = 82932F0817A26EAE009AC871 /* Build configuration list for PBXProject "Whittle" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -311,7 +324,7 @@
 			projectRoot = "";
 			targets = (
 				82932F0C17A26EAE009AC871 /* Whittle */,
-				82932F3217A26EAE009AC871 /* WhittleTests */,
+				8297E603195DC4500044D489 /* Whittle Tests */,
 			);
 		};
 /* End PBXProject section */
@@ -326,34 +339,19 @@
 				82932F2517A26EAE009AC871 /* Default@2x.png in Resources */,
 				82932F2717A26EAE009AC871 /* Default-568h@2x.png in Resources */,
 				82932F2D17A26EAE009AC871 /* BENViewController.xib in Resources */,
+				82C8D8C9195DBF0900BF9C1F /* test.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		82932F3017A26EAE009AC871 /* Resources */ = {
+		8297E602195DC4500044D489 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				82932F3F17A26EAE009AC871 /* InfoPlist.strings in Resources */,
+				8297E60E195DC4500044D489 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		82932F3117A26EAE009AC871 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		82932F0917A26EAE009AC871 /* Sources */ = {
@@ -363,37 +361,31 @@
 				82932F1D17A26EAE009AC871 /* main.m in Sources */,
 				82932F2117A26EAE009AC871 /* BENAppDelegate.m in Sources */,
 				82932F2A17A26EAE009AC871 /* BENViewController.m in Sources */,
-				82932F4D17A26ED3009AC871 /* WHIInvocationChainEvaluator.m in Sources */,
 				8292CD9517AC0C7E00B0B678 /* WHIInvocation.m in Sources */,
-				826D35B717AF9F9F00F74FE7 /* WHIPathSet.m in Sources */,
+				826D35B717AF9F9F00F74FE7 /* WHIEdgeSet.m in Sources */,
 				82588E3517B3AEF100FA744F /* WHIFunction.m in Sources */,
-				8296312017BFE65C00943F84 /* WHIFunction+WHIPathOperation.m in Sources */,
 				824D1A2517D4C8E900E6A1B3 /* NSScanner+WhittleAdditions.m in Sources */,
-				829787D317C0D47100AF9B4A /* WHIPath.m in Sources */,
+				829787D317C0D47100AF9B4A /* WHIEdge.m in Sources */,
 				829787D617C0DA1400AF9B4A /* WHIWhittle.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		82932F2E17A26EAE009AC871 /* Sources */ = {
+		8297E600195DC4500044D489 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				82932F4217A26EAE009AC871 /* PathOperationTests.m in Sources */,
-				82418AB417D6401100404E68 /* WHTCollection.m in Sources */,
-				82418AB717D6401100404E68 /* WHTElement.m in Sources */,
-				8250899817C20D5100A2FF14 /* testModel.xcdatamodeld in Sources */,
-				82C193E71815467A00A62CB5 /* ParsingTests.m in Sources */,
-				8250899B17C20E0500A2FF14 /* WHITestModel.m in Sources */,
+				8297E618195DC47C0044D489 /* PathOperationTests.m in Sources */,
+				8297E617195DC47C0044D489 /* ParsingTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		82932F3917A26EAE009AC871 /* PBXTargetDependency */ = {
+		8297E613195DC4500044D489 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 82932F0C17A26EAE009AC871 /* Whittle */;
-			targetProxy = 82932F3817A26EAE009AC871 /* PBXContainerItemProxy */;
+			targetProxy = 8297E612195DC4500044D489 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -414,10 +406,10 @@
 			name = BENViewController.xib;
 			sourceTree = "<group>";
 		};
-		82932F3D17A26EAE009AC871 /* InfoPlist.strings */ = {
+		8297E60C195DC4500044D489 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				82932F3E17A26EAE009AC871 /* en */,
+				8297E60D195DC4500044D489 /* en */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -503,37 +495,64 @@
 			};
 			name = Release;
 		};
-		82932F4917A26EAE009AC871 /* Debug */ = {
+		8297E615195DC4500044D489 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Whittle.app/Whittle";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				FRAMEWORK_SEARCH_PATHS = (
-					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
-					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Whittle/Whittle-Prefix.pch";
-				INFOPLIST_FILE = "WhittleTests/WhittleTests-Info.plist";
-				PRODUCT_NAME = WhittleTests;
+				GCC_PREFIX_HEADER = "Whittle Tests/Whittle Tests-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				INFOPLIST_FILE = "Whittle Tests/Whittle Tests-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = octest;
+				WRAPPER_EXTENSION = xctest;
 			};
 			name = Debug;
 		};
-		82932F4A17A26EAE009AC871 /* Release */ = {
+		8297E616195DC4500044D489 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Whittle.app/Whittle";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				ENABLE_NS_ASSERTIONS = NO;
 				FRAMEWORK_SEARCH_PATHS = (
-					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
-					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Whittle/Whittle-Prefix.pch";
-				INFOPLIST_FILE = "WhittleTests/WhittleTests-Info.plist";
-				PRODUCT_NAME = WhittleTests;
+				GCC_PREFIX_HEADER = "Whittle Tests/Whittle Tests-Prefix.pch";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				INFOPLIST_FILE = "Whittle Tests/Whittle Tests-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = octest;
+				WRAPPER_EXTENSION = xctest;
 			};
 			name = Release;
 		};
@@ -558,11 +577,11 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		82932F4817A26EAE009AC871 /* Build configuration list for PBXNativeTarget "WhittleTests" */ = {
+		8297E614195DC4500044D489 /* Build configuration list for PBXNativeTarget "Whittle Tests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				82932F4917A26EAE009AC871 /* Debug */,
-				82932F4A17A26EAE009AC871 /* Release */,
+				8297E615195DC4500044D489 /* Debug */,
+				8297E616195DC4500044D489 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

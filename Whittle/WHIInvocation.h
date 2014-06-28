@@ -8,13 +8,15 @@
 
 #import <Foundation/Foundation.h>
 
+
 /*
  
  WHIInvocation is a refrence for a function and arguments to pass to the function. WHIInvocation does not provide a
  pointer to an actual function implementation (e.g. WHIFunction). It is up to the calling code to resolve
- functionName to an actual function implementation.
+ functionName to an actual function implementation. This is so that bindings can be performed as late as possible.
 
  */
+
 
 
 @interface WHIInvocation : NSObject
@@ -24,3 +26,4 @@
 @property(nonatomic, readonly) NSArray *arguments;
 
 @end
+

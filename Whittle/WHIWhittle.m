@@ -8,6 +8,9 @@
 
 #import "WHIWhittle.h"
 #import "WHIInvocation.h"
+#import "WHIFunction.h"
+
+#import "WHIEdgeSet.h"
 #import "NSScanner+WhittleAdditions.h"
 
 
@@ -25,22 +28,96 @@ NSString * const WHIWhittleErrorDomain = @"WHIWhittleErrorDomain";
 
 
 
+
+#pragma mark - whittle implementation
 @implementation WHIWhittle
 
--(id)initWithPath:(NSString *)path error:(NSError **)outError
++(NSDictionary *)defaultBindings
 {
-    self = [super init];
-    NSArray *invocations = [[self class] parseInvocationChainFromString:path error:outError];
-    if (invocations == nil) {
-        return nil;
-    }
+    static NSDictionary *defaultBindings = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        defaultBindings = @{
+                            @"root":       [WHIFunction rootNodeOperation],
+                            @"preceeding": [WHIFunction preceedingNodeOperation],
+                            @"endpoints":  [WHIFunction endpointNodesOperation],
+                            @"all":        [WHIFunction allNodesOperation],
+                            @"pick":       [WHIFunction pickOperation],
+                            @"filter":     [WHIFunction filterOperation],
+                            @"union":      [WHIFunction unionOperation],
+                            };
+    });
 
-    return [self initWithInvocationChain:invocations];
+    return defaultBindings;
 }
 
 
 
+#pragma mark - instance life cycle
+-(id)initWithInvocationChain:(NSArray *)invocations defaultBindings:(NSDictionary *)defaultBindings
+{
+    NSParameterAssert(invocations);
+    NSParameterAssert(defaultBindings);
+
+    self = [super init];
+    if (self == nil) return nil;
+
+    _invocations = [invocations copy];
+    _defaultBindings = [defaultBindings copy];
+
+    return self;
+}
+
+
+
+-(id)initWithInvocationChain:(NSArray *)invocations
+{
+    return [self initWithInvocationChain:invocations defaultBindings:[WHIWhittle defaultBindings]];
+}
+
+
+
+-(id)init
+{
+    return [self initWithInvocationChain:nil defaultBindings:nil];
+}
+
+
+
+#pragma mark - evaluation
+-(id<WHIEdgeSet>)executeWithObject:(id)rootObject bindings:(NSDictionary *)userBindings error:(NSError **)outError
+{
+    NSArray *arguments = @[rootObject, self.invocations];
+    //Create the bindings
+    NSMutableDictionary *mergedBindings = [[WHIWhittle defaultBindings] mutableCopy];
+    if (userBindings != nil) [mergedBindings addEntriesFromDictionary:userBindings];
+
+    //Evaluate the chain
+    WHIFunction *executeInvocationChainOperation = [WHIFunction executeInvocationChainOperation];
+    return [executeInvocationChainOperation executeWithEdge:nil arguments:arguments bindings:mergedBindings error:outError];
+}
+
+@end
+
+
+
 #pragma mark - parsing/invocation factory methods
+@implementation WHIWhittle (DSLFactory)
+
++(instancetype)whittleWithQuery:(NSString *)query
+{
+    NSError *outError;
+    NSArray *invocations = [[self class] parseInvocationChainFromString:query error:&outError];
+    if (invocations == nil) {
+        [NSException raise:NSInvalidArgumentException format:@"Invalid Whittle query. Parse error: %@", outError];
+        return nil;
+    }
+
+    return [[self alloc] initWithInvocationChain:invocations];
+}
+
+
+
 +(NSArray *)parseInvocationChainFromString:(NSString *)string error:(NSError **)outError
 {
     NSScanner *scanner = [NSScanner scannerWithString:string];
@@ -126,14 +203,14 @@ NSString * const WHIWhittleErrorDomain = @"WHIWhittleErrorDomain";
 
 +(NSString *)scanFunctionNameFromScanner:(NSScanner *)scanner error:(NSError **)outError
 {
-    //TODO: this is not thread safe.
     static NSCharacterSet *headCharacterSet = nil;
     static NSCharacterSet *bodyCharacterSet = nil;
-    if (headCharacterSet == nil) {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
         headCharacterSet = [NSCharacterSet characterSetWithCharactersInString:@"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"];
         bodyCharacterSet = [NSCharacterSet characterSetWithCharactersInString:@"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"];
-    }
-    
+    });
+
     NSString *head = nil;
     if (![scanner scanCharactersFromSet:headCharacterSet intoString:&head]) {
         return nil;
@@ -201,3 +278,25 @@ NSString * const WHIWhittleErrorDomain = @"WHIWhittleErrorDomain";
 }
 
 @end
+
+
+
+#pragma mark - Object addition
+@implementation NSObject (Whittle)
+
+-(id<WHIEdgeSet>)WHI_evaluateQuery:(NSString *)query bindings:(NSDictionary *)bindings error:(NSError **)outError
+{
+    WHIWhittle *whittle = [WHIWhittle whittleWithQuery:query];
+    //If whittle failed to initalize then this will return nil and outError will not be changed from init
+    return [whittle executeWithObject:self bindings:bindings error:outError];
+}
+
+
+
+-(id<WHIEdgeSet>)WHI_evaluateQuery:(NSString *)query
+{
+    return [self WHI_evaluateQuery:query bindings:nil error:NULL];
+}
+
+@end
+
