@@ -11,6 +11,19 @@
 #import "WHIEdgeSet.h"
 
 
+@implementation WHIInvocationVariableArgument
+
+-(instancetype)initWithVariableName:(NSString *)variableName
+{
+    self = [super init];
+    if (self == nil) return nil;
+    _variableName = [variableName copy];
+    return self;
+}
+
+@end
+
+
 
 @implementation WHIInvocation
 
@@ -68,7 +81,7 @@
 #pragma mark - invocation
 -(id<WHIEdgeSet>)invokeWithEdgeSet:(id<WHIEdgeSet>)inputEdgeSet environment:(NSDictionary *)environment error:(NSError **)outError
 {
-    //Resolve the references
+    //Resolve the function reference
     WHIFunction *function = environment[self.functionName];
     if (function == NULL) {
         NSString *description = [NSString stringWithFormat:@"Function not found for binding named %@", self.functionName];
@@ -76,12 +89,25 @@
         return nil;
     }
 
+    //Resolve variable
+    NSMutableArray *resolvedArguments = [NSMutableArray new];
+    for (id argument in self.arguments) {
+        BOOL isVariable = [argument isKindOfClass:[WHIInvocationVariableArgument class]];
+        id value = (isVariable) ? environment[[argument variableName]] : argument;
+        if (value == nil) {
+            //TODO: Unable to resolve variable
+            if (outError != NULL) *outError = [NSError errorWithDomain:NSCocoaErrorDomain code:0 userInfo:nil];
+            return nil;
+        }
+        [resolvedArguments addObject:value];
+    }
+
     //Create output values
     WHIEdgeSet *outputEdgeSet = [WHIEdgeSet new];
     //Apply the function to each inputEdge and sum the results
     for (id<WHIEdge> inputEdge in inputEdgeSet) {
 
-        WHIEdgeSet *subOutputEdgeSet = [function executeWithEdge:inputEdge arguments:self.arguments environment:environment error:outError];
+        WHIEdgeSet *subOutputEdgeSet = [function executeWithEdge:inputEdge arguments:resolvedArguments environment:environment error:outError];
         BOOL didError = (subOutputEdgeSet == nil);
         if (didError) return nil;
 

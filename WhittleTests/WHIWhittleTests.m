@@ -1,5 +1,5 @@
 //
-//  ParsingTests.m
+//  WHIWhittleTests.m
 //  Whittle
 //
 //  Created by Benedict Cohen on 21/10/2013.
@@ -12,21 +12,12 @@
 
 
 
-@interface ParsingTests : XCTestCase
+@interface WHIWhittleTests : XCTestCase
 @end
 
 
 
-@implementation ParsingTests
-
--(void)testInvocationEquivilance
-{
-    WHIInvocation *expectedResult = [[WHIInvocation alloc] initWithFunctionName:@"arf" arguments:@[]];
-    WHIInvocation *actualResult = [[WHIInvocation alloc] initWithFunctionName:@"arf" arguments:@[]];
-
-    XCTAssertEqualObjects(expectedResult, actualResult, @"Invocation not equal.");
-}
-
+@implementation WHIWhittleTests
 
 
 -(void)testVaildOperationWithZeroOperands
@@ -48,6 +39,7 @@
     XCTAssertEqualObjects(expectedResult, actualResult, @"expect result does not match actual result.");
     XCTAssertNotNil(error, @"Error not filled.");
 }
+
 
 
 

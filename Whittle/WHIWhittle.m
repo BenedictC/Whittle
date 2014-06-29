@@ -15,12 +15,6 @@
 
 
 
-#pragma mark - error handling
-NSString * const WHIWhittleErrorDomain = @"WHIWhittleErrorDomain";
-
-
-
-#pragma mark - whittle implementation
 @implementation WHIWhittle
 
 +(NSDictionary *)defaultEnvironment
@@ -75,7 +69,7 @@ NSString * const WHIWhittleErrorDomain = @"WHIWhittleErrorDomain";
 
 
 
-#pragma mark - evaluation
+#pragma mark - execution
 -(id<WHIEdgeSet>)executeWithObject:(id)rootObject environment:(NSDictionary *)userEnvironment error:(NSError **)outError
 {
     //Create the environment
@@ -153,9 +147,9 @@ NSString * const WHIWhittleErrorDomain = @"WHIWhittleErrorDomain";
     }
     
     //Scan the name
-    NSString *name = [self scanFunctionNameFromScanner:scanner error:outError];
+    NSString *name = [self scanIdentifierFromScanner:scanner];
     if (name == nil) {
-        //Failed to scan name
+        //TODO: Failed to scan name
         return nil;
     }
 
@@ -171,8 +165,9 @@ NSString * const WHIWhittleErrorDomain = @"WHIWhittleErrorDomain";
         //Attempt to scan an argument
         if (argument == nil) argument = [self scanNumberArgumentFromScanner:scanner error:outError];
         if (argument == nil) argument = [self scanStringArgumentFromScanner:scanner error:outError];
+        if (argument == nil) argument = [self scanVariableFromScanner:scanner error:outError];
         if (argument == nil) argument = [self scanInvocationListArgumentFromScanner:scanner error:outError];
-        
+
         //Commit the argument
         if (argument != nil) [arguments addObject:argument];
 
@@ -191,14 +186,14 @@ NSString * const WHIWhittleErrorDomain = @"WHIWhittleErrorDomain";
 
 
 
-+(NSString *)scanFunctionNameFromScanner:(NSScanner *)scanner error:(NSError **)outError
++(NSString *)scanIdentifierFromScanner:(NSScanner *)scanner
 {
     static NSCharacterSet *headCharacterSet = nil;
     static NSCharacterSet *bodyCharacterSet = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        headCharacterSet = [NSCharacterSet characterSetWithCharactersInString:@"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"];
-        bodyCharacterSet = [NSCharacterSet characterSetWithCharactersInString:@"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"];
+        headCharacterSet = [NSCharacterSet characterSetWithCharactersInString:@"_ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"];
+        bodyCharacterSet = [NSCharacterSet characterSetWithCharactersInString:@"_ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"];
     });
 
     NSString *head = nil;
@@ -256,6 +251,25 @@ NSString * const WHIWhittleErrorDomain = @"WHIWhittleErrorDomain";
     }
 
     return string;
+}
+
+
+
++(WHIInvocationVariableArgument *)scanVariableFromScanner:(NSScanner *)scanner error:(NSError **)outError
+{
+    static NSString *const varibleDelimitter = @"$";
+
+    if (![scanner scanString:varibleDelimitter intoString:NULL]) {
+        return nil;
+    }
+
+    NSString *variableName = [self scanIdentifierFromScanner:scanner];
+    if (variableName == nil) {
+        //TODO: Invalid variable name
+        return nil;
+    }
+
+    return [[WHIInvocationVariableArgument alloc] initWithVariableName:variableName];
 }
 
 

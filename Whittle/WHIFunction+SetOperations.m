@@ -16,21 +16,26 @@
 
 +(WHIFunction *)unionOperation
 {
-    return [WHIFunction functionWithBlock:(^WHIEdgeSet *(id<WHIEdge> edge, NSArray *unionArguments, NSDictionary *environment, NSError **outError){
+    static dispatch_once_t onceToken;
+    static WHIFunction *function = nil;
+    dispatch_once(&onceToken, ^{
+        function = [WHIFunction functionWithBlock:(^WHIEdgeSet *(id<WHIEdge> edge, NSArray *unionArguments, NSDictionary *environment, NSError **outError){
+            WHIEdgeSet *outputEdgeSet = [WHIEdgeSet new];
 
-        WHIEdgeSet *outputEdgeSet = [WHIEdgeSet new];
+            for (NSArray *invocationList in unionArguments) {
+                WHIEdgeSet *rootEdgeSet = [WHIEdgeSet edgeSetWithEdge:edge];
+                WHIEdgeSet *childEdgeSet = [WHIInvocation executeInvocationList:invocationList edgeSet:rootEdgeSet environment:environment error:outError];
+                BOOL didError = (childEdgeSet == nil);
+                if (didError) return nil;
 
-        for (NSArray *invocationList in unionArguments) {
-            WHIEdgeSet *rootEdgeSet = [WHIEdgeSet edgeSetWithEdge:edge];
-            WHIEdgeSet *childEdgeSet = [WHIInvocation executeInvocationList:invocationList edgeSet:rootEdgeSet environment:environment error:outError];
-            BOOL didError = (childEdgeSet == nil);
-            if (didError) return nil;
+                [outputEdgeSet addEdgesFromEdgeSet:childEdgeSet];
+            }
 
-            [outputEdgeSet addEdgesFromEdgeSet:childEdgeSet];
-        }
+            return outputEdgeSet;
+        })];
+    });
+    return function;
 
-        return outputEdgeSet;
-    })];
 }
 
 //TODO: +(WHIFunction *)minusOperation;       //Returns a set with the objects of the query removed from the receiver/

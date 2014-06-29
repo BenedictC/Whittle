@@ -27,41 +27,49 @@
  (aFunction)(anotherFunction argument1)(a3rdFunction argument1, argument2)
  
  Functions can take any number of arguments but are limited to the follow types:
- number:        Numbers are treated as doubles
- string:        Back tick (`) delimited. A back tick can be escaped with a slash (/). A literal slash is //.
- invocationList:      Functions take the form as described previously, i.e., (functionName argument1, argument2) etc.
- //TODO: variable:      Is this sensible? When would the value be resolved?
+ number             Numbers are treated as doubles
+ string             Back tick (`) delimited. A back tick can be escaped with a slash (/). A literal slash is //.
+ invocationList     Functions take the form as described previously, i.e., (functionName argument1, argument2) etc.
+ variable           Variables take the form $variableName, i.e. a dollar sign followed by string of alpha numeric
+                    characters. Variables are resolved from the environment prior to function invocation.
 
  Functions have access to the environment dictionary.
 
- The function implementations are retereived from the environment dictionary when the query is execute. +defaultEnvironment
- contains the following functions:
+ The function implementations are retereived from the environment dictionary when the query is execute. 
+ +defaultEnvironment contains the following functions:
 
- @"root":       Returns the root of the graph. Parameters:
-                 - None
- @"preceeding": Returns the preeceding node of the walk. Parameters:
+ root           Returns the root of the graph. 
+                Parameters:
                  - None
 
- @"endpoints":  Returns all edges that originate from the current node. Parameters:
+ preceeding     Returns the preeceding node of the walk. 
+                Parameters:
                  - None
- @"all":        Returns all edges that accessible from the current node (a recrusive call to endpoints). Parameters:
+
+ endpoints      Returns all edges that originate from the current node. 
+                Parameters:
                  - None
- @"filter":     Returns all edges that match the supplied filter. Parameters:
-                 1. filter: string. The filter has access to the environment. Environment can be accessed by appending a $ to
-                   the binding name. Additional environment are available: $EDGE_NAME, $EDGE_INDEX, $DESTINATION_NODE
- @"pick":       Returns the first edge with name or index matching the supplied parameter:
+
+ all            Returns all edges that accessible from the current node (a recrusive call to endpoints). 
+                Parameters:
+                 - None
+
+ filter         Returns all edges that match the supplied filter. 
+                Parameters:
+                 1. filter: string. The filter has access to the environment. Environment can be accessed by appending 
+                    a $ to the environment varible name. Additional environment variables are available: $EDGE_NAME, 
+                    $EDGE_INDEX, $DESTINATION_NODE
+
+ pick           Returns the first edge with name or index matching the supplied parameter. 
+                Parameters:
                  ... A list of string/number. Returns the edges that matches the string/numbers.
 
- @"union":      Returns an edge set created by ???. Parameters:
+ union          Returns an edge set created by combining the results of the edge sets returned by each parameter.
+                Parameters:
                  ... A list of invocationLists
 
-
-
- A concrete example:
- (pick `events`)(filter `$VALUE.date > $date`)
-
- Additional Functions can be defined by adding instance of WHIFunction to the environment dictionary. The function can then
- be referenced by using its' dictionary key as the function name:
+ Additional functions can be defined by adding instance of WHIFunction to the environment dictionary. The function can
+ then be referenced by using its' dictionary key as the function name:
  (pick `results`)(odd)
  
  See WHIFunction for details of creating functions.
@@ -88,14 +96,6 @@
 //unionOperation;          //Returns the union of two nodeSets
 
  */
-
-#pragma mark - errors
-extern NSString * const WHIWhittleErrorDomain;
-
-enum {
-    WHIWhittleErrorInvalidInvocationArgument,
-    WHIWhittleErrorUnexpectValue,
-};
 
 
 

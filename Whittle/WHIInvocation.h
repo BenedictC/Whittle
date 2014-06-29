@@ -26,6 +26,13 @@
 
 
 
+@interface WHIInvocationVariableArgument : NSObject
+-(instancetype)initWithVariableName:(NSString *)variableName;
+@property(nonatomic, readonly) NSString *variableName;
+@end
+
+
+
 @interface WHIInvocation : NSObject
 
 -(id)initWithFunctionName:(NSString *)functionName arguments:(NSArray *)arguments;
@@ -37,3 +44,5 @@
 +(id<WHIEdgeSet>)executeInvocationList:(NSArray *)invocations edgeSet:(id<WHIEdgeSet>)edgeSet environment:(NSDictionary *)environment error:(NSError **)outError;
 
 @end
+
+

@@ -86,3 +86,11 @@ typedef id<WHIEdgeSet> (^WHIFunctionBlock)(id<WHIEdge> edge, NSArray *arguments,
 +(WHIFunction *)pickOperation;
 
 @end
+
+
+
+@interface WHIFunction (TestOperations)
++(WHIFunction *)passthroughOperation;
++(WHIFunction *)emptySetOperation;
++(WHIFunction *)failOperation;
+@end
