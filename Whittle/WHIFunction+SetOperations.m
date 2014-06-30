@@ -8,7 +8,7 @@
 
 #import "WHIFunction+SetOperations.h"
 #import "WHIInvocation.h"
-#import "WHIEdgeSet.h"
+#import "WHIWalkSet.h"
 
 
 
@@ -19,19 +19,19 @@
     static dispatch_once_t onceToken;
     static WHIFunction *function = nil;
     dispatch_once(&onceToken, ^{
-        function = [WHIFunction functionWithBlock:(^WHIEdgeSet *(id<WHIEdge> edge, NSArray *unionArguments, NSDictionary *environment, NSError **outError){
-            WHIEdgeSet *outputEdgeSet = [WHIEdgeSet new];
+        function = [WHIFunction functionWithBlock:(^WHIWalkSet *(id<WHIWalk> walk, NSArray *unionArguments, NSDictionary *environment, NSError **outError){
+            WHIWalkSet *outputWalkSet = [WHIWalkSet new];
 
             for (NSArray *invocationList in unionArguments) {
-                WHIEdgeSet *rootEdgeSet = [WHIEdgeSet edgeSetWithEdge:edge];
-                WHIEdgeSet *childEdgeSet = [WHIInvocation executeInvocationList:invocationList edgeSet:rootEdgeSet environment:environment error:outError];
-                BOOL didError = (childEdgeSet == nil);
+                WHIWalkSet *rootWalkSet = [WHIWalkSet walkSetWithWalk:walk];
+                WHIWalkSet *childWalkSet = [WHIInvocation executeInvocationList:invocationList edgeSet:rootWalkSet environment:environment error:outError];
+                BOOL didError = (childWalkSet == nil);
                 if (didError) return nil;
 
-                [outputEdgeSet addEdgesFromEdgeSet:childEdgeSet];
+                [outputWalkSet addWalksFromWalkSet:childWalkSet];
             }
 
-            return outputEdgeSet;
+            return outputWalkSet;
         })];
     });
     return function;

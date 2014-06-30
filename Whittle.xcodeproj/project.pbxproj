@@ -7,13 +7,21 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		8217098D19601C970052DCDC /* WHIConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 8217098C19601C970052DCDC /* WHIConstants.m */; };
+		8217098D19601C970052DCDC /* WHIError.m in Sources */ = {isa = PBXBuildFile; fileRef = 8217098C19601C970052DCDC /* WHIError.m */; };
 		8217098F196024050052DCDC /* WHIFunctionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8217098E196024050052DCDC /* WHIFunctionTests.m */; };
 		821709911960271B0052DCDC /* WHIFunctionOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 821709901960271B0052DCDC /* WHIFunctionOperationTests.m */; };
 		82170993196029B70052DCDC /* WHIInvocationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 82170992196029B70052DCDC /* WHIInvocationTests.m */; };
+		821FF18B19604A9F00829CFB /* WHIWhittleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 821FF18A19604A9F00829CFB /* WHIWhittleTests.m */; };
+		821FF18D19604AB400829CFB /* test.json in Resources */ = {isa = PBXBuildFile; fileRef = 821FF18C19604AB400829CFB /* test.json */; };
+		821FF19919604AE000829CFB /* testModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 821FF19119604AE000829CFB /* testModel.xcdatamodeld */; };
+		821FF19A19604AE000829CFB /* WHITestModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 821FF19419604AE000829CFB /* WHITestModel.m */; };
+		821FF19B19604AE000829CFB /* WHTCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 821FF19619604AE000829CFB /* WHTCollection.m */; };
+		821FF19C19604AE000829CFB /* WHTElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 821FF19819604AE000829CFB /* WHTElement.m */; };
+		821FF19F1960517D00829CFB /* WHIWalkSetTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 821FF19D1960517D00829CFB /* WHIWalkSetTests.m */; };
+		821FF1A01960517D00829CFB /* WHIWalkTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 821FF19E1960517D00829CFB /* WHIWalkTests.m */; };
 		824D1A2517D4C8E900E6A1B3 /* NSScanner+WhittleAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 824D1A2417D4C8E900E6A1B3 /* NSScanner+WhittleAdditions.m */; };
 		82588E3517B3AEF100FA744F /* WHIFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = 82588E3417B3AEF100FA744F /* WHIFunction.m */; };
-		826D35B717AF9F9F00F74FE7 /* WHIEdgeSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 826D35B617AF9F9F00F74FE7 /* WHIEdgeSet.m */; };
+		826D35B717AF9F9F00F74FE7 /* WHIWalkSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 826D35B617AF9F9F00F74FE7 /* WHIWalkSet.m */; };
 		8292CD9517AC0C7E00B0B678 /* WHIInvocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8292CD9417AC0C7E00B0B678 /* WHIInvocation.m */; };
 		82932F1117A26EAE009AC871 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 82932F1017A26EAE009AC871 /* UIKit.framework */; };
 		82932F1317A26EAE009AC871 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 82932F1217A26EAE009AC871 /* Foundation.framework */; };
@@ -26,14 +34,12 @@
 		82932F2717A26EAE009AC871 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 82932F2617A26EAE009AC871 /* Default-568h@2x.png */; };
 		82932F2A17A26EAE009AC871 /* BENViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 82932F2917A26EAE009AC871 /* BENViewController.m */; };
 		82932F2D17A26EAE009AC871 /* BENViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 82932F2B17A26EAE009AC871 /* BENViewController.xib */; };
-		829787D317C0D47100AF9B4A /* WHIEdge.m in Sources */ = {isa = PBXBuildFile; fileRef = 829787D217C0D47100AF9B4A /* WHIEdge.m */; };
+		829787D317C0D47100AF9B4A /* WHIWalk.m in Sources */ = {isa = PBXBuildFile; fileRef = 829787D217C0D47100AF9B4A /* WHIWalk.m */; };
 		829787D617C0DA1400AF9B4A /* WHIWhittle.m in Sources */ = {isa = PBXBuildFile; fileRef = 829787D517C0DA1400AF9B4A /* WHIWhittle.m */; };
 		8297E606195DC4500044D489 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8297E605195DC4500044D489 /* XCTest.framework */; };
 		8297E607195DC4500044D489 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 82932F1217A26EAE009AC871 /* Foundation.framework */; };
 		8297E608195DC4500044D489 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 82932F1017A26EAE009AC871 /* UIKit.framework */; };
 		8297E60E195DC4500044D489 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8297E60C195DC4500044D489 /* InfoPlist.strings */; };
-		8297E617195DC47C0044D489 /* WHIWhittleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 82C193E61815467A00A62CB5 /* WHIWhittleTests.m */; };
-		82C8D8C9195DBF0900BF9C1F /* test.json in Resources */ = {isa = PBXBuildFile; fileRef = 82C8D8C7195DBCD700BF9C1F /* test.json */; };
 		82CD8783195EED02002232EE /* WHIFunction+SetOperations.m in Sources */ = {isa = PBXBuildFile; fileRef = 82CD8782195EED02002232EE /* WHIFunction+SetOperations.m */; };
 /* End PBXBuildFile section */
 
@@ -48,25 +54,29 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		8217098B19601C970052DCDC /* WHIConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WHIConstants.h; sourceTree = "<group>"; };
-		8217098C19601C970052DCDC /* WHIConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WHIConstants.m; sourceTree = "<group>"; };
+		8217098B19601C970052DCDC /* WHIError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WHIError.h; sourceTree = "<group>"; };
+		8217098C19601C970052DCDC /* WHIError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WHIError.m; sourceTree = "<group>"; };
 		8217098E196024050052DCDC /* WHIFunctionTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WHIFunctionTests.m; sourceTree = "<group>"; };
 		821709901960271B0052DCDC /* WHIFunctionOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WHIFunctionOperationTests.m; sourceTree = "<group>"; };
 		82170992196029B70052DCDC /* WHIInvocationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WHIInvocationTests.m; sourceTree = "<group>"; };
-		82418AB217D6401100404E68 /* WHTCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WHTCollection.h; sourceTree = "<group>"; };
-		82418AB317D6401100404E68 /* WHTCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WHTCollection.m; sourceTree = "<group>"; };
-		82418AB517D6401100404E68 /* WHTElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WHTElement.h; sourceTree = "<group>"; };
-		82418AB617D6401100404E68 /* WHTElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WHTElement.m; sourceTree = "<group>"; };
+		821FF18A19604A9F00829CFB /* WHIWhittleTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WHIWhittleTests.m; sourceTree = "<group>"; };
+		821FF18C19604AB400829CFB /* test.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = test.json; sourceTree = "<group>"; };
+		821FF19219604AE000829CFB /* testModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = testModel.xcdatamodel; sourceTree = "<group>"; };
+		821FF19319604AE000829CFB /* WHITestModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WHITestModel.h; sourceTree = "<group>"; };
+		821FF19419604AE000829CFB /* WHITestModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WHITestModel.m; sourceTree = "<group>"; };
+		821FF19519604AE000829CFB /* WHTCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WHTCollection.h; sourceTree = "<group>"; };
+		821FF19619604AE000829CFB /* WHTCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WHTCollection.m; sourceTree = "<group>"; };
+		821FF19719604AE000829CFB /* WHTElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WHTElement.h; sourceTree = "<group>"; };
+		821FF19819604AE000829CFB /* WHTElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WHTElement.m; sourceTree = "<group>"; };
+		821FF19D1960517D00829CFB /* WHIWalkSetTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WHIWalkSetTests.m; sourceTree = "<group>"; };
+		821FF19E1960517D00829CFB /* WHIWalkTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WHIWalkTests.m; sourceTree = "<group>"; };
 		824D1A2317D4C8E900E6A1B3 /* NSScanner+WhittleAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSScanner+WhittleAdditions.h"; sourceTree = "<group>"; };
 		824D1A2417D4C8E900E6A1B3 /* NSScanner+WhittleAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSScanner+WhittleAdditions.m"; sourceTree = "<group>"; };
-		8250899717C20D5100A2FF14 /* testModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = testModel.xcdatamodel; sourceTree = "<group>"; };
-		8250899917C20E0500A2FF14 /* WHITestModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WHITestModel.h; sourceTree = "<group>"; };
-		8250899A17C20E0500A2FF14 /* WHITestModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WHITestModel.m; sourceTree = "<group>"; };
 		8250899C17C20E3A00A2FF14 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		82588E3317B3AEF100FA744F /* WHIFunction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = WHIFunction.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		82588E3417B3AEF100FA744F /* WHIFunction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = WHIFunction.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		826D35B517AF9F9F00F74FE7 /* WHIEdgeSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WHIEdgeSet.h; sourceTree = "<group>"; };
-		826D35B617AF9F9F00F74FE7 /* WHIEdgeSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WHIEdgeSet.m; sourceTree = "<group>"; };
+		826D35B517AF9F9F00F74FE7 /* WHIWalkSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WHIWalkSet.h; sourceTree = "<group>"; };
+		826D35B617AF9F9F00F74FE7 /* WHIWalkSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WHIWalkSet.m; sourceTree = "<group>"; };
 		8292CD9317AC0C7E00B0B678 /* WHIInvocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = WHIInvocation.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		8292CD9417AC0C7E00B0B678 /* WHIInvocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WHIInvocation.m; sourceTree = "<group>"; };
 		82932F0D17A26EAE009AC871 /* Whittle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Whittle.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -86,9 +96,9 @@
 		82932F2917A26EAE009AC871 /* BENViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BENViewController.m; sourceTree = "<group>"; };
 		82932F2C17A26EAE009AC871 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/BENViewController.xib; sourceTree = "<group>"; };
 		82932F3417A26EAE009AC871 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
-		829787D017C0D44300AF9B4A /* WHIEdgeProtocols.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WHIEdgeProtocols.h; sourceTree = "<group>"; };
-		829787D117C0D47100AF9B4A /* WHIEdge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WHIEdge.h; sourceTree = "<group>"; };
-		829787D217C0D47100AF9B4A /* WHIEdge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WHIEdge.m; sourceTree = "<group>"; };
+		829787D017C0D44300AF9B4A /* WHIWalkProtocols.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WHIWalkProtocols.h; sourceTree = "<group>"; };
+		829787D117C0D47100AF9B4A /* WHIWalk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WHIWalk.h; sourceTree = "<group>"; };
+		829787D217C0D47100AF9B4A /* WHIWalk.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WHIWalk.m; sourceTree = "<group>"; };
 		829787D417C0DA1400AF9B4A /* WHIWhittle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = WHIWhittle.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		829787D517C0DA1400AF9B4A /* WHIWhittle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = WHIWhittle.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		8297E604195DC4500044D489 /* Whittle Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Whittle Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -96,8 +106,6 @@
 		8297E60B195DC4500044D489 /* Whittle Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Whittle Tests-Info.plist"; sourceTree = "<group>"; };
 		8297E60D195DC4500044D489 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		8297E611195DC4500044D489 /* Whittle Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Whittle Tests-Prefix.pch"; sourceTree = "<group>"; };
-		82C193E61815467A00A62CB5 /* WHIWhittleTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = WHIWhittleTests.m; path = ../WhittleTests/WHIWhittleTests.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		82C8D8C7195DBCD700BF9C1F /* test.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = test.json; path = ../WhittleTests/test.json; sourceTree = "<group>"; };
 		82CD8781195EED02002232EE /* WHIFunction+SetOperations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WHIFunction+SetOperations.h"; sourceTree = "<group>"; };
 		82CD8782195EED02002232EE /* WHIFunction+SetOperations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = "WHIFunction+SetOperations.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 /* End PBXFileReference section */
@@ -136,6 +144,22 @@
 				82932F2B17A26EAE009AC871 /* BENViewController.xib */,
 			);
 			name = Controllers;
+			sourceTree = "<group>";
+		};
+		821FF19019604AE000829CFB /* TODO: Core Data Testing */ = {
+			isa = PBXGroup;
+			children = (
+				8250899C17C20E3A00A2FF14 /* CoreData.framework */,
+				821FF19119604AE000829CFB /* testModel.xcdatamodeld */,
+				821FF19319604AE000829CFB /* WHITestModel.h */,
+				821FF19419604AE000829CFB /* WHITestModel.m */,
+				821FF19519604AE000829CFB /* WHTCollection.h */,
+				821FF19619604AE000829CFB /* WHTCollection.m */,
+				821FF19719604AE000829CFB /* WHTElement.h */,
+				821FF19819604AE000829CFB /* WHTElement.m */,
+			);
+			name = "TODO: Core Data Testing";
+			path = CoreData;
 			sourceTree = "<group>";
 		};
 		82932F0417A26EAE009AC871 = {
@@ -196,12 +220,14 @@
 		8297E609195DC4500044D489 /* Whittle Tests */ = {
 			isa = PBXGroup;
 			children = (
+				821FF19D1960517D00829CFB /* WHIWalkSetTests.m */,
+				821FF19E1960517D00829CFB /* WHIWalkTests.m */,
 				8217098E196024050052DCDC /* WHIFunctionTests.m */,
 				821709901960271B0052DCDC /* WHIFunctionOperationTests.m */,
 				82170992196029B70052DCDC /* WHIInvocationTests.m */,
-				82C193E61815467A00A62CB5 /* WHIWhittleTests.m */,
-				82C193E8181546F100A62CB5 /* TODO: Core Data Testing */,
-				82C8D8C7195DBCD700BF9C1F /* test.json */,
+				821FF18A19604A9F00829CFB /* WHIWhittleTests.m */,
+				821FF18C19604AB400829CFB /* test.json */,
+				821FF19019604AE000829CFB /* TODO: Core Data Testing */,
 				8297E60A195DC4500044D489 /* Supporting Files */,
 			);
 			path = "Whittle Tests";
@@ -217,18 +243,6 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		82AC5749195DCD6700DEE12D /* Result objects */ = {
-			isa = PBXGroup;
-			children = (
-				829787D017C0D44300AF9B4A /* WHIEdgeProtocols.h */,
-				829787D117C0D47100AF9B4A /* WHIEdge.h */,
-				829787D217C0D47100AF9B4A /* WHIEdge.m */,
-				826D35B517AF9F9F00F74FE7 /* WHIEdgeSet.h */,
-				826D35B617AF9F9F00F74FE7 /* WHIEdgeSet.m */,
-			);
-			name = "Result objects";
-			sourceTree = "<group>";
-		};
 		82AC574A195DF63B00DEE12D /* Parsing additions */ = {
 			isa = PBXGroup;
 			children = (
@@ -238,34 +252,22 @@
 			name = "Parsing additions";
 			sourceTree = "<group>";
 		};
-		82C193E8181546F100A62CB5 /* TODO: Core Data Testing */ = {
-			isa = PBXGroup;
-			children = (
-				8250899917C20E0500A2FF14 /* WHITestModel.h */,
-				8250899A17C20E0500A2FF14 /* WHITestModel.m */,
-				8250899617C20D5100A2FF14 /* testModel.xcdatamodeld */,
-				82418AB517D6401100404E68 /* WHTElement.h */,
-				82418AB617D6401100404E68 /* WHTElement.m */,
-				82418AB217D6401100404E68 /* WHTCollection.h */,
-				82418AB317D6401100404E68 /* WHTCollection.m */,
-				8250899C17C20E3A00A2FF14 /* CoreData.framework */,
-			);
-			name = "TODO: Core Data Testing";
-			path = ../WhittleTests;
-			sourceTree = "<group>";
-		};
 		82C82BE117D134BC003A55F8 /* Whittle */ = {
 			isa = PBXGroup;
 			children = (
-				8217098B19601C970052DCDC /* WHIConstants.h */,
-				8217098C19601C970052DCDC /* WHIConstants.m */,
-				82AC5749195DCD6700DEE12D /* Result objects */,
+				8217098B19601C970052DCDC /* WHIError.h */,
+				8217098C19601C970052DCDC /* WHIError.m */,
+				829787D017C0D44300AF9B4A /* WHIWalkProtocols.h */,
+				829787D117C0D47100AF9B4A /* WHIWalk.h */,
+				829787D217C0D47100AF9B4A /* WHIWalk.m */,
+				826D35B517AF9F9F00F74FE7 /* WHIWalkSet.h */,
+				826D35B617AF9F9F00F74FE7 /* WHIWalkSet.m */,
 				82588E3317B3AEF100FA744F /* WHIFunction.h */,
 				82588E3417B3AEF100FA744F /* WHIFunction.m */,
-				8292CD9317AC0C7E00B0B678 /* WHIInvocation.h */,
-				8292CD9417AC0C7E00B0B678 /* WHIInvocation.m */,
 				82CD8781195EED02002232EE /* WHIFunction+SetOperations.h */,
 				82CD8782195EED02002232EE /* WHIFunction+SetOperations.m */,
+				8292CD9317AC0C7E00B0B678 /* WHIInvocation.h */,
+				8292CD9417AC0C7E00B0B678 /* WHIInvocation.m */,
 				829787D417C0DA1400AF9B4A /* WHIWhittle.h */,
 				829787D517C0DA1400AF9B4A /* WHIWhittle.m */,
 				82AC574A195DF63B00DEE12D /* Parsing additions */,
@@ -355,7 +357,6 @@
 				82932F2517A26EAE009AC871 /* Default@2x.png in Resources */,
 				82932F2717A26EAE009AC871 /* Default-568h@2x.png in Resources */,
 				82932F2D17A26EAE009AC871 /* BENViewController.xib in Resources */,
-				82C8D8C9195DBF0900BF9C1F /* test.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -364,6 +365,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8297E60E195DC4500044D489 /* InfoPlist.strings in Resources */,
+				821FF18D19604AB400829CFB /* test.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -379,12 +381,12 @@
 				82932F2117A26EAE009AC871 /* BENAppDelegate.m in Sources */,
 				82932F2A17A26EAE009AC871 /* BENViewController.m in Sources */,
 				8292CD9517AC0C7E00B0B678 /* WHIInvocation.m in Sources */,
-				826D35B717AF9F9F00F74FE7 /* WHIEdgeSet.m in Sources */,
+				826D35B717AF9F9F00F74FE7 /* WHIWalkSet.m in Sources */,
 				82588E3517B3AEF100FA744F /* WHIFunction.m in Sources */,
 				824D1A2517D4C8E900E6A1B3 /* NSScanner+WhittleAdditions.m in Sources */,
-				829787D317C0D47100AF9B4A /* WHIEdge.m in Sources */,
+				829787D317C0D47100AF9B4A /* WHIWalk.m in Sources */,
 				829787D617C0DA1400AF9B4A /* WHIWhittle.m in Sources */,
-				8217098D19601C970052DCDC /* WHIConstants.m in Sources */,
+				8217098D19601C970052DCDC /* WHIError.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -392,10 +394,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				821FF19A19604AE000829CFB /* WHITestModel.m in Sources */,
 				821709911960271B0052DCDC /* WHIFunctionOperationTests.m in Sources */,
+				821FF19B19604AE000829CFB /* WHTCollection.m in Sources */,
+				821FF18B19604A9F00829CFB /* WHIWhittleTests.m in Sources */,
+				821FF19C19604AE000829CFB /* WHTElement.m in Sources */,
+				821FF1A01960517D00829CFB /* WHIWalkTests.m in Sources */,
 				82170993196029B70052DCDC /* WHIInvocationTests.m in Sources */,
-				8297E617195DC47C0044D489 /* WHIWhittleTests.m in Sources */,
+				821FF19F1960517D00829CFB /* WHIWalkSetTests.m in Sources */,
 				8217098F196024050052DCDC /* WHIFunctionTests.m in Sources */,
+				821FF19919604AE000829CFB /* testModel.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -609,12 +617,12 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		8250899617C20D5100A2FF14 /* testModel.xcdatamodeld */ = {
+		821FF19119604AE000829CFB /* testModel.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				8250899717C20D5100A2FF14 /* testModel.xcdatamodel */,
+				821FF19219604AE000829CFB /* testModel.xcdatamodel */,
 			);
-			currentVersion = 8250899717C20D5100A2FF14 /* testModel.xcdatamodel */;
+			currentVersion = 821FF19219604AE000829CFB /* testModel.xcdatamodel */;
 			path = testModel.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

@@ -10,7 +10,7 @@
 #import "WHIInvocation.h"
 #import "WHIFunction+SetOperations.h"
 
-#import "WHIEdgeSet.h"
+#import "WHIWalkSet.h"
 #import "NSScanner+WhittleAdditions.h"
 
 
@@ -23,12 +23,12 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         defaultEnvironment = @{
-                            @"root":       [WHIFunction rootNodeOperation],
-                            @"preceeding": [WHIFunction preceedingNodeOperation],
-                            @"endpoints":  [WHIFunction endpointNodesOperation],
-                            @"all":        [WHIFunction allNodesOperation],
-                            @"pick":       [WHIFunction pickOperation],
-                            @"filter":     [WHIFunction filterOperation],
+                            @"root":       [WHIFunction rootNodeFunction],
+                            @"preceeding": [WHIFunction preceedingNodeFunction],
+                            @"endpoints":  [WHIFunction endpointNodesFunction],
+                            @"all":        [WHIFunction allNodesFunction],
+                            @"pick":       [WHIFunction pickFunction],
+                            @"filter":     [WHIFunction filterFunction],
                             @"union":      [WHIFunction unionOperation],
                             };
     });
@@ -70,14 +70,14 @@
 
 
 #pragma mark - execution
--(id<WHIEdgeSet>)executeWithObject:(id)rootObject environment:(NSDictionary *)userEnvironment error:(NSError **)outError
+-(id<WHIWalkSet>)executeWithObject:(id)rootObject environment:(NSDictionary *)userEnvironment error:(NSError **)outError
 {
     //Create the environment
     NSMutableDictionary *mergedEnvironment = [[WHIWhittle defaultEnvironment] mutableCopy];
     if (userEnvironment != nil) [mergedEnvironment addEntriesFromDictionary:userEnvironment];
 
     //Execute the list
-    WHIEdgeSet *inputSet = [WHIEdgeSet edgeSetWithEdgeToDestinationObject:rootObject preceedingEdge:nil userInfo:nil];
+    WHIWalkSet *inputSet = [WHIWalkSet walkSetWithWalkToDestinationObject:rootObject label:nil preceedingWalk:nil];
     return [WHIInvocation executeInvocationList:self.invocations edgeSet:inputSet environment:mergedEnvironment error:outError];
 }
 
@@ -288,7 +288,7 @@
 #pragma mark - Object addition
 @implementation NSObject (Whittle)
 
--(id<WHIEdgeSet>)WHI_evaluateQuery:(NSString *)query environment:(NSDictionary *)environment error:(NSError **)outError
+-(id<WHIWalkSet>)WHI_evaluateQuery:(NSString *)query environment:(NSDictionary *)environment error:(NSError **)outError
 {
     WHIWhittle *whittle = [WHIWhittle whittleWithQuery:query];
     //If whittle failed to initalize then this will return nil and outError will not be changed from init
@@ -297,7 +297,7 @@
 
 
 
--(id<WHIEdgeSet>)WHI_evaluateQuery:(NSString *)query
+-(id<WHIWalkSet>)WHI_evaluateQuery:(NSString *)query
 {
     return [self WHI_evaluateQuery:query environment:nil error:NULL];
 }

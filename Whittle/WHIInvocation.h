@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-@protocol WHIEdge, WHIEdgeSet;
+@protocol WHIWalk, WHIWalkSet;
 
 
 
@@ -39,9 +39,9 @@
 @property(nonatomic, readonly) NSString *functionName;
 @property(nonatomic, readonly) NSArray *arguments;
 
--(id<WHIEdgeSet>)invokeWithEdgeSet:(id<WHIEdgeSet>)inputEdgeSet environment:(NSDictionary *)environment error:(NSError **)outError;
+-(id<WHIWalkSet>)invokeWithWalkSet:(id<WHIWalkSet>)inputWalkSet environment:(NSDictionary *)environment error:(NSError **)outError;
 
-+(id<WHIEdgeSet>)executeInvocationList:(NSArray *)invocations edgeSet:(id<WHIEdgeSet>)edgeSet environment:(NSDictionary *)environment error:(NSError **)outError;
++(id<WHIWalkSet>)executeInvocationList:(NSArray *)invocations edgeSet:(id<WHIWalkSet>)edgeSet environment:(NSDictionary *)environment error:(NSError **)outError;
 
 @end
 

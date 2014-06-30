@@ -17,7 +17,7 @@
 
  */
 
-#import "WHIEdgeProtocols.h"
+#import "WHIWalkProtocols.h"
 
 
 /**
@@ -28,9 +28,9 @@
  @param environment  Dictionary that some function use to fetch values and also contains functions.
  @param error     Error giving reason for invocation failure.
 
- @return An object conforming to WHIEdgeSet.
+ @return An object conforming to WHIWalkSet.
  */
-typedef id<WHIEdgeSet> (^WHIFunctionBlock)(id<WHIEdge> edge, NSArray *arguments, NSDictionary *environment, NSError **error);
+typedef id<WHIWalkSet> (^WHIFunctionBlock)(id<WHIWalk> edge, NSArray *arguments, NSDictionary *environment, NSError **error);
 
 
 
@@ -42,25 +42,25 @@ typedef id<WHIEdgeSet> (^WHIFunctionBlock)(id<WHIEdge> edge, NSArray *arguments,
 -(instancetype)initWithBlock:(WHIFunctionBlock)block;
 @property(nonatomic, copy, readonly) WHIFunctionBlock block;
 
--(id<WHIEdgeSet>)executeWithEdge:(id<WHIEdge>)edge arguments:(NSArray *)arguments environment:(NSDictionary *)environment error:(NSError **)outError;
+-(id<WHIWalkSet>)executeWithWalk:(id<WHIWalk>)edge arguments:(NSArray *)arguments environment:(NSDictionary *)environment error:(NSError **)outError;
 
 @end
 
 
 
-@interface WHIFunction (EdgeOperations)
+@interface WHIFunction (WalkFunctions)
 
 #pragma mark Navigating backwards
 /**
  Returns the root node.
  Arguments form: nil
  */
-+(WHIFunction *)rootNodeOperation;
++(WHIFunction *)rootNodeFunction;
 /**
- An operation that returns the preceeding node, i.e. path.preceedingEdge
+ An operation that returns the preceeding node, i.e. path.preceedingWalk
  Arguments form: nil
  */
-+(WHIFunction *)preceedingNodeOperation; //Returns the preceeding node in the path.
++(WHIFunction *)preceedingNodeFunction; //Returns the preceeding node in the path.
 
 //TODO: Document what the arguments are for the operations
 #pragma mark Navigating forwards
@@ -68,29 +68,29 @@ typedef id<WHIEdgeSet> (^WHIFunctionBlock)(id<WHIEdge> edge, NSArray *arguments,
  //Returns all endpoints connected to the current node.
  Arguments form: nil
  */
-+(WHIFunction *)endpointNodesOperation;
++(WHIFunction *)endpointNodesFunction;
 /**
  //Returns all endpoint connected to the current node that that match the supplied predicate.
  Arguments form: nil
  */
-+(WHIFunction *)filterOperation;
++(WHIFunction *)filterFunction;
 /**
 //Returns all nodes that can be reached from the current node.
  Arguments form: nil
  */
-+(WHIFunction *)allNodesOperation;
++(WHIFunction *)allNodesFunction;
 /**
 //Returns the first object with key/index that exactly matches a collection.
  Arguments form: nil
  */
-+(WHIFunction *)pickOperation;
++(WHIFunction *)pickFunction;
 
 @end
 
 
 
-@interface WHIFunction (TestOperations)
-+(WHIFunction *)passthroughOperation;
-+(WHIFunction *)emptySetOperation;
-+(WHIFunction *)failOperation;
+@interface WHIFunction (TestFunctions)
++(WHIFunction *)passthroughFunction;
++(WHIFunction *)emptySetFunction;
++(WHIFunction *)failFunction;
 @end

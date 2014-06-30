@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import "WHIEdgeProtocols.h"
+#import "WHIWalkProtocols.h"
 
 
 
@@ -120,7 +120,7 @@
 
  @return The result of the query or nil if an error occured.
  */
--(id<WHIEdgeSet>)executeWithObject:(id)rootObject environment:(NSDictionary *)environment error:(NSError **)outError;
+-(id<WHIWalkSet>)executeWithObject:(id)rootObject environment:(NSDictionary *)environment error:(NSError **)outError;
 
 @end
 
@@ -157,7 +157,7 @@
 
  @return The result of the query or nil if an error occured.
  */
--(id<WHIEdgeSet>)WHI_evaluateQuery:(NSString *)query environment:(NSDictionary *)environment error:(NSError **)outError;
+-(id<WHIWalkSet>)WHI_evaluateQuery:(NSString *)query environment:(NSDictionary *)environment error:(NSError **)outError;
 
 /**
  This is equivilent to calling WHI_evaluateQuery:environment:error: with an empty environment dictionary and a NULL outError.
@@ -166,6 +166,6 @@
 
  @return The result of the query.
  */
--(id<WHIEdgeSet>)WHI_evaluateQuery:(NSString *)query;
+-(id<WHIWalkSet>)WHI_evaluateQuery:(NSString *)query;
 
 @end

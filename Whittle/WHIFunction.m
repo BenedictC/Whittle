@@ -8,7 +8,7 @@
 
 #import "WHIFunction.h"
 
-#import "WHIEdgeSet.h"
+#import "WHIWalkSet.h"
 
 #import <objc/runtime.h>
 
@@ -39,7 +39,7 @@
 
 
 #pragma mark - execution
--(id<WHIEdgeSet>)executeWithEdge:(id<WHIEdge>)edge arguments:(NSArray *)arguments environment:(NSDictionary *)environment error:(NSError **)outError
+-(id<WHIWalkSet>)executeWithWalk:(id<WHIWalk>)edge arguments:(NSArray *)arguments environment:(NSDictionary *)environment error:(NSError **)outError
 {
     WHIFunctionBlock block = self.block;
 
@@ -115,20 +115,20 @@ static NSString *keyForValueInDictionary(id value, NSDictionary *dictionary) {
 
 
 
-@implementation WHIFunction (EdgeOperations)
+@implementation WHIFunction (WalkFunctions)
 
-+(WHIFunction *)rootNodeOperation
++(WHIFunction *)rootNodeFunction
 {
     static dispatch_once_t onceToken;
     static WHIFunction *function = nil;
     dispatch_once(&onceToken, ^{
-        function = [WHIFunction functionWithBlock:(^WHIEdgeSet *(id<WHIEdge> initialEdge, NSArray *arguments, NSDictionary *environment, NSError **outError){
+        function = [WHIFunction functionWithBlock:(^WHIWalkSet *(id<WHIWalk> initialWalk, NSArray *arguments, NSDictionary *environment, NSError **outError){
 
-            id<WHIEdge>edge = initialEdge;
+            id<WHIWalk>walk = initialWalk;
 
-            while (edge.preceedingEdge != nil) edge = edge.preceedingEdge;
+            while (walk.preceedingWalk != nil) walk = walk.preceedingWalk;
 
-            return [WHIEdgeSet edgeSetWithEdge:edge];
+            return [WHIWalkSet walkSetWithWalk:walk];
         })];
     });
     return function;
@@ -137,15 +137,15 @@ static NSString *keyForValueInDictionary(id value, NSDictionary *dictionary) {
 
 
 
-+(WHIFunction *)preceedingNodeOperation
++(WHIFunction *)preceedingNodeFunction
 {
     static dispatch_once_t onceToken;
     static WHIFunction *function = nil;
     dispatch_once(&onceToken, ^{
-        function = [WHIFunction functionWithBlock:(^WHIEdgeSet *(id<WHIEdge> edge, NSArray *arguments, NSDictionary *environment, NSError **outError){
-            id<WHIEdge> preceedingNode = edge.preceedingEdge;
+        function = [WHIFunction functionWithBlock:(^WHIWalkSet *(id<WHIWalk> edge, NSArray *arguments, NSDictionary *environment, NSError **outError){
+            id<WHIWalk> preceedingWalk = edge.preceedingWalk;
 
-            return (preceedingNode != nil) ? [WHIEdgeSet edgeSetWithEdge:preceedingNode] : [WHIEdgeSet new];
+            return (preceedingWalk != nil) ? [WHIWalkSet walkSetWithWalk:preceedingWalk] : [WHIWalkSet new];
         })];
     });
     return function;
@@ -154,33 +154,31 @@ static NSString *keyForValueInDictionary(id value, NSDictionary *dictionary) {
 
 
 
-+(WHIFunction *)endpointNodesOperation
++(WHIFunction *)endpointNodesFunction
 {
     static dispatch_once_t onceToken;
     static WHIFunction *function = nil;
     dispatch_once(&onceToken, ^{
-        function = [WHIFunction functionWithBlock:(^WHIEdgeSet *(id<WHIEdge> edge, NSArray *arguments, NSDictionary *environment, NSError **outError){
+        function = [WHIFunction functionWithBlock:(^WHIWalkSet *(id<WHIWalk> edge, NSArray *arguments, NSDictionary *environment, NSError **outError){
             id object = edge.destinationObject;
 
             //Handle dictionaries and mapTables to use the proper key.
             switch (objectTypeOfObject(object)) {
                 case WHIFunctionObjectTypeKeyedCollection: {
-                    WHIEdgeSet *nodeSet = [WHIEdgeSet new];
+                    WHIWalkSet *nodeSet = [WHIWalkSet new];
                     for (NSString *key in allKeysInObject(object)) {
                         id childObject = [object objectForKey:key]; //Note that we're using objectForKey: and not valueForKey:.
-                        NSDictionary *userInfo = nil; //TODO:
-                        [nodeSet addEdgeToDestinationObject:childObject preceedingEdge:edge userInfo:userInfo];
+                        [nodeSet addWalkToDestinationObject:childObject label:key preceedingWalk:edge];
                     }
                     return nodeSet;
                 }
 
                     //Handle enumerable objects. This handles other cocoa object collections (i.e. NSArray, NSSet, NSOrderedSet)
                 case WHIFunctionObjectTypeIndexedCollection: {
-                    WHIEdgeSet *nodeSet = [WHIEdgeSet new];
+                    WHIWalkSet *nodeSet = [WHIWalkSet new];
                     NSUInteger idx = 0;
                     for (id childObject in object) {
-                        NSDictionary *userInfo = nil; //TODO:
-                        [nodeSet addEdgeToDestinationObject:childObject preceedingEdge:edge userInfo:userInfo];
+                        [nodeSet addWalkToDestinationObject:childObject label:@(idx) preceedingWalk:edge];
                         idx++;
                     }
                     return nodeSet;
@@ -188,11 +186,10 @@ static NSString *keyForValueInDictionary(id value, NSDictionary *dictionary) {
 
                     //Default to treating as an arbitary objects
                 case WHIFunctionObjectTypeArbitaryObject: {
-                    WHIEdgeSet *nodeSet = [WHIEdgeSet new];
+                    WHIWalkSet *nodeSet = [WHIWalkSet new];
                     for (NSString *key in allKeysInObject(object)) {
                         id childObject = [object valueForKey:key];
-                        NSDictionary *userInfo = nil; //TODO:
-                        [nodeSet addEdgeToDestinationObject:childObject preceedingEdge:edge userInfo:userInfo];
+                        [nodeSet addWalkToDestinationObject:childObject label:key preceedingWalk:edge];
                     }
                     return nodeSet;
                 }
@@ -208,41 +205,41 @@ static NSString *keyForValueInDictionary(id value, NSDictionary *dictionary) {
 
 
 
-+(WHIFunction *)allNodesOperation
++(WHIFunction *)allNodesFunction
 {
     static dispatch_once_t onceToken;
     static WHIFunction *function = nil;
     dispatch_once(&onceToken, ^{
-        function = [WHIFunction functionWithBlock:(^WHIEdgeSet *(id<WHIEdge> initialEdge, NSArray *arguments, NSDictionary *environment, NSError **outError){
+        function = [WHIFunction functionWithBlock:(^WHIWalkSet *(id<WHIWalk> initialWalk, NSArray *arguments, NSDictionary *environment, NSError **outError){
             //Walk graph breadth first
-            NSMutableArray *edgeStack = [NSMutableArray arrayWithObject:initialEdge];
-            NSMutableSet *visitedNodes = [NSMutableSet setWithObject:initialEdge.destinationObject];
-            WHIEdgeSet *allEdges = [WHIEdgeSet edgeSetWithEdge:initialEdge];
+            NSMutableArray *edgeStack = [NSMutableArray arrayWithObject:initialWalk];
+            NSMutableSet *visitedNodes = [NSMutableSet setWithObject:initialWalk.destinationObject];
+            WHIWalkSet *allWalks = [WHIWalkSet walkSetWithWalk:initialWalk];
 
             while ([edgeStack count] > 0) {
                 //dequeue a node
-                id<WHIEdge> currentEdge = edgeStack[0];
+                id<WHIWalk> currentWalk = edgeStack[0];
                 [edgeStack removeObjectAtIndex:0];
 
-                //Get all the edges that strart from currentEdge.node
-                WHIEdgeSet *edgeSet = [[WHIFunction endpointNodesOperation] executeWithEdge:currentEdge arguments:arguments environment:environment error:outError];
+                //Get all the edges that strart from currentWalk.node
+                WHIWalkSet *edgeSet = [[WHIFunction endpointNodesFunction] executeWithWalk:currentWalk arguments:arguments environment:environment error:outError];
                 if (edgeSet == nil) return nil; //There was an error - endpointNodesOperation will have created the error object.
 
                 //Add the results to returned node set
-                [allEdges addEdgesFromEdgeSet:edgeSet];
+                [allWalks addWalksFromWalkSet:edgeSet];
 
                 //Which of the tail objects do we need to walk?
-                for (id<WHIEdge>childEdge in edgeSet) {
-                    id connectedNode = childEdge.destinationObject;
+                for (id<WHIWalk>childWalk in edgeSet) {
+                    id connectedNode = childWalk.destinationObject;
                     //Do we need to walk the edges of the node
                     BOOL hasAlreadyVisitedNode = [visitedNodes containsObject:connectedNode];
-                    if (!hasAlreadyVisitedNode) [edgeStack addObject:childEdge]; //To change to a depth first walk change addObject: to insert:AtIndex:0.
+                    if (!hasAlreadyVisitedNode) [edgeStack addObject:childWalk]; //To change to a depth first walk change addObject: to insert:AtIndex:0.
 
                     [visitedNodes addObject:connectedNode];
                 }
             }
 
-            return allEdges;
+            return allWalks;
         })];
     });
     return function;
@@ -251,15 +248,15 @@ static NSString *keyForValueInDictionary(id value, NSDictionary *dictionary) {
 
 
 
-+(WHIFunction *)pickOperation
++(WHIFunction *)pickFunction
 {
     
     static dispatch_once_t onceToken;
     static WHIFunction *function = nil;
     dispatch_once(&onceToken, ^{
-        function = [WHIFunction functionWithBlock:(^WHIEdgeSet *(id<WHIEdge> edge, NSArray *arguments, NSDictionary *environment, NSError **outError){
+        function = [WHIFunction functionWithBlock:(^WHIWalkSet *(id<WHIWalk> edge, NSArray *arguments, NSDictionary *environment, NSError **outError){
             id object = edge.destinationObject;
-            WHIEdgeSet *outputEdgeSet = [WHIEdgeSet new];
+            WHIWalkSet *outputWalkSet = [WHIWalkSet new];
             for (id subscript in arguments) {
 
                 //Attempt to pick the value from a string subscript
@@ -268,8 +265,7 @@ static NSString *keyForValueInDictionary(id value, NSDictionary *dictionary) {
                     id key = subscript;
                     id value = [object valueForKey:key];
                     if (value != nil) {
-                        NSDictionary *userInfo = nil; //TODO:
-                        [outputEdgeSet addEdgeToDestinationObject:value preceedingEdge:edge userInfo:userInfo];
+                        [outputWalkSet addWalkToDestinationObject:value label:key preceedingWalk:edge];
                     }
                     continue;
                 }
@@ -283,8 +279,7 @@ static NSString *keyForValueInDictionary(id value, NSDictionary *dictionary) {
                     if (isIndexed) {
                         id value = [object objectAtIndex:idx];
                         if (value != nil) {
-                            NSDictionary *userInfo = nil; //TODO:
-                            [outputEdgeSet addEdgeToDestinationObject:value preceedingEdge:edge userInfo:userInfo];
+                            [outputWalkSet addWalkToDestinationObject:value label:@(idx) preceedingWalk:edge];
                         }
                         continue;
                     }
@@ -300,8 +295,7 @@ static NSString *keyForValueInDictionary(id value, NSDictionary *dictionary) {
                             return (id)nil;
                         }();
                         if (value != nil) {
-                            NSDictionary *userInfo = nil; //TODO:
-                            [outputEdgeSet addEdgeToDestinationObject:value preceedingEdge:edge userInfo:userInfo];
+                            [outputWalkSet addWalkToDestinationObject:value label:@(idx) preceedingWalk:edge];
                         }
                         continue;
                     }
@@ -312,7 +306,7 @@ static NSString *keyForValueInDictionary(id value, NSDictionary *dictionary) {
                 //TODO: Error - subscript is not a valid subscript type.
             }
 
-            return outputEdgeSet;
+            return outputWalkSet;
         })];
     });
     return function;
@@ -321,12 +315,12 @@ static NSString *keyForValueInDictionary(id value, NSDictionary *dictionary) {
 
 
 
-+(WHIFunction *)filterOperation
++(WHIFunction *)filterFunction
 {
     static dispatch_once_t onceToken;
     static WHIFunction *function = nil;
     dispatch_once(&onceToken, ^{
-        function = [WHIFunction functionWithBlock:(^WHIEdgeSet *(id<WHIEdge> edge, NSArray *arguments, NSDictionary *environment,  NSError **outError){
+        function = [WHIFunction functionWithBlock:(^WHIWalkSet *(id<WHIWalk> edge, NSArray *arguments, NSDictionary *environment,  NSError **outError){
             //TODO: Convert these asserts to NSErrors
             NSCAssert(arguments.count == 1, @"Incorrect number of arguments. Filter expects arguments of type: [string].");
             //Unpack arguments
@@ -334,7 +328,7 @@ static NSString *keyForValueInDictionary(id value, NSDictionary *dictionary) {
             NSCAssert([predicateFormatString isKindOfClass:[NSString class]], @"Expect NSString but found %@ .", NSStringFromClass([predicateFormatString class]));
 
             id object = edge.destinationObject;
-            WHIEdgeSet *nodeSet = [WHIEdgeSet new];
+            WHIWalkSet *nodeSet = [WHIWalkSet new];
             NSPredicate *predicate = [NSPredicate predicateWithFormat:predicateFormatString];
             NSMutableDictionary *mergedEnvironment = [environment mutableCopy];
             //TODO: Should these be log statements? Would it be better to fail and set the error?
@@ -358,8 +352,7 @@ static NSString *keyForValueInDictionary(id value, NSDictionary *dictionary) {
                         mergedEnvironment[@"INDEX"] = @(NSNotFound);
                         mergedEnvironment[@"VALUE"] = value;
                         BOOL isMatch = [predicate evaluateWithObject:object substitutionVariables:mergedEnvironment];
-                        NSDictionary *userInfo = nil; //TODO: What do we put in the userInfo?
-                        if (isMatch) [nodeSet addEdgeToDestinationObject:value preceedingEdge:edge userInfo:userInfo];
+                        if (isMatch) [nodeSet addWalkToDestinationObject:value label:key preceedingWalk:edge];
                     }
                     break;
 
@@ -371,8 +364,7 @@ static NSString *keyForValueInDictionary(id value, NSDictionary *dictionary) {
                         mergedEnvironment[@"INDEX"] = @(idx);
                         mergedEnvironment[@"VALUE"] = value;
                         BOOL isMatch = [predicate evaluateWithObject:object substitutionVariables:mergedEnvironment];
-                        NSDictionary *userInfo = nil; //TODO: What do we put in the userInfo?
-                        if (isMatch) [nodeSet addEdgeToDestinationObject:value preceedingEdge:edge userInfo:userInfo];
+                        if (isMatch) [nodeSet addWalkToDestinationObject:value label:@(idx) preceedingWalk:edge];
 
                         idx++;
                     }
@@ -392,15 +384,15 @@ static NSString *keyForValueInDictionary(id value, NSDictionary *dictionary) {
 
 
 
-@implementation WHIFunction (TestOperations)
+@implementation WHIFunction (TestFunctions)
 
-+(WHIFunction *)passthroughOperation
++(WHIFunction *)passthroughFunction
 {
     static dispatch_once_t onceToken;
     static WHIFunction *function = nil;
     dispatch_once(&onceToken, ^{
-        function = [WHIFunction functionWithBlock:(^WHIEdgeSet *(id<WHIEdge> edge, NSArray *arguments, NSDictionary *environment, NSError **outError){
-            return [WHIEdgeSet edgeSetWithEdge:edge];
+        function = [WHIFunction functionWithBlock:(^WHIWalkSet *(id<WHIWalk> walk, NSArray *arguments, NSDictionary *environment, NSError **outError){
+            return [WHIWalkSet walkSetWithWalk:walk];
         })];
     });
     return function;
@@ -408,13 +400,13 @@ static NSString *keyForValueInDictionary(id value, NSDictionary *dictionary) {
 
 
 
-+(WHIFunction *)emptySetOperation
++(WHIFunction *)emptySetFunction
 {
     static dispatch_once_t onceToken;
     static WHIFunction *function = nil;
     dispatch_once(&onceToken, ^{
-        function = [WHIFunction functionWithBlock:(^WHIEdgeSet *(id<WHIEdge> edge, NSArray *arguments, NSDictionary *environment, NSError **outError){
-            return [WHIEdgeSet new];
+        function = [WHIFunction functionWithBlock:(^WHIWalkSet *(id<WHIWalk> edge, NSArray *arguments, NSDictionary *environment, NSError **outError){
+            return [WHIWalkSet new];
         })];
     });
     return function;
@@ -423,12 +415,12 @@ static NSString *keyForValueInDictionary(id value, NSDictionary *dictionary) {
 
 
 
-+(WHIFunction *)failOperation
++(WHIFunction *)failFunction
 {
     static dispatch_once_t onceToken;
     static WHIFunction *function = nil;
     dispatch_once(&onceToken, ^{
-        function = [WHIFunction functionWithBlock:(^WHIEdgeSet *(id<WHIEdge> edge, NSArray *arguments, NSDictionary *environment, NSError **outError){
+        function = [WHIFunction functionWithBlock:(^WHIWalkSet *(id<WHIWalk> edge, NSArray *arguments, NSDictionary *environment, NSError **outError){
             if (outError != NULL) *outError = [NSError errorWithDomain:NSCocoaErrorDomain code:0 userInfo:nil];
             return nil;
         })];

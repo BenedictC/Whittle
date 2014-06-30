@@ -19,7 +19,10 @@
 
 @implementation WHIWhittleTests
 
+#pragma mark - execution tests
 
+
+#pragma mark - DSL tests
 -(void)testVaildOperationWithZeroOperands
 {
     WHIInvocation *expectedResult = [[WHIInvocation alloc] initWithFunctionName:@"validFunction" arguments:@[]];
@@ -32,15 +35,7 @@
 
 -(void)testInvaildOperationWithZeroOperands
 {
-    WHIInvocation *expectedResult = nil;
-    NSError *error = nil;
-    WHIInvocation *actualResult = [[[WHIWhittle whittleWithQuery:@"(1invalidFunction)"] invocations] firstObject];
-
-    XCTAssertEqualObjects(expectedResult, actualResult, @"expect result does not match actual result.");
-    XCTAssertNotNil(error, @"Error not filled.");
+    XCTFail(@"TODO");
 }
-
-
-
 
 @end

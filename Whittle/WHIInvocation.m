@@ -8,7 +8,7 @@
 
 #import "WHIInvocation.h"
 #import "WHIFunction.h"
-#import "WHIEdgeSet.h"
+#import "WHIWalkSet.h"
 
 
 @implementation WHIInvocationVariableArgument
@@ -79,7 +79,7 @@
 
 
 #pragma mark - invocation
--(id<WHIEdgeSet>)invokeWithEdgeSet:(id<WHIEdgeSet>)inputEdgeSet environment:(NSDictionary *)environment error:(NSError **)outError
+-(id<WHIWalkSet>)invokeWithWalkSet:(id<WHIWalkSet>)inputWalkSet environment:(NSDictionary *)environment error:(NSError **)outError
 {
     //Resolve the function reference
     WHIFunction *function = environment[self.functionName];
@@ -103,38 +103,38 @@
     }
 
     //Create output values
-    WHIEdgeSet *outputEdgeSet = [WHIEdgeSet new];
-    //Apply the function to each inputEdge and sum the results
-    for (id<WHIEdge> inputEdge in inputEdgeSet) {
+    WHIWalkSet *outputWalkSet = [WHIWalkSet new];
+    //Apply the function to each inputWalk and sum the results
+    for (id<WHIWalk> inputWalk in inputWalkSet) {
 
-        WHIEdgeSet *subOutputEdgeSet = [function executeWithEdge:inputEdge arguments:resolvedArguments environment:environment error:outError];
-        BOOL didError = (subOutputEdgeSet == nil);
+        WHIWalkSet *subOutputWalkSet = [function executeWithWalk:inputWalk arguments:resolvedArguments environment:environment error:outError];
+        BOOL didError = (subOutputWalkSet == nil);
         if (didError) return nil;
 
-        [outputEdgeSet addEdgesFromEdgeSet:subOutputEdgeSet];
+        [outputWalkSet addWalksFromWalkSet:subOutputWalkSet];
     }
 
-    return outputEdgeSet;
+    return outputWalkSet;
 }
 
 
 
 #pragma mark - invocation list
-+(id<WHIEdgeSet>)executeInvocationList:(NSArray *)invocations edgeSet:(id<WHIEdgeSet>)inputEdgeSet environment:(NSDictionary *)environment error:(NSError **)outError
++(id<WHIWalkSet>)executeInvocationList:(NSArray *)invocations edgeSet:(id<WHIWalkSet>)inputWalkSet environment:(NSDictionary *)environment error:(NSError **)outError
 {
     //Invoke the function on every object return by the previous function.
-    WHIEdgeSet *preceedingEdgeSet = inputEdgeSet;
+    WHIWalkSet *preceedingWalkSet = inputWalkSet;
     for (WHIInvocation *invocation in invocations) {
 
-        WHIEdgeSet *currentEdgeSet = [invocation invokeWithEdgeSet:preceedingEdgeSet environment:environment error:outError];
-        BOOL didError = (currentEdgeSet == nil);
+        WHIWalkSet *currentWalkSet = [invocation invokeWithWalkSet:preceedingWalkSet environment:environment error:outError];
+        BOOL didError = (currentWalkSet == nil);
         if (didError) return nil;
 
         //Prep for the next invocation
-        preceedingEdgeSet = currentEdgeSet;
+        preceedingWalkSet = currentWalkSet;
     }
 
-    return preceedingEdgeSet;
+    return preceedingWalkSet;
 }
 
 @end

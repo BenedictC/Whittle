@@ -1,5 +1,5 @@
 //
-//  WHIConstants.h
+//  WHIError.h
 //  Whittle
 //
 //  Created by Benedict Cohen on 29/06/2014.

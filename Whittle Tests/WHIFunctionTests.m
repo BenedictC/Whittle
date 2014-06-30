@@ -9,6 +9,7 @@
 #import <XCTest/XCTest.h>
 
 #import "WHIFunction.h"
+#import "WHIWalkSet.h"
 
 
 
@@ -22,7 +23,7 @@
 
 - (void)testInit
 {
-    WHIFunction *function = [[WHIFunction alloc] initWithBlock:^id<WHIEdgeSet>(id<WHIEdge> edge, NSArray *arguments, NSDictionary *environment, NSError *__autoreleasing *error) {
+    WHIFunction *function = [[WHIFunction alloc] initWithBlock:^id<WHIWalkSet>(id<WHIWalk> walk, NSArray *arguments, NSDictionary *environment, NSError *__autoreleasing *error) {
         return nil;
     }];
     XCTAssertNotNil(function, @"Failed to create function with valid input");
@@ -34,14 +35,14 @@
 
 -(void)testEquality
 {
-    WHIFunction *function0 = [WHIFunction emptySetOperation];
+    WHIFunction *function0 = [WHIFunction emptySetFunction];
     XCTAssertEqualObjects(function0, function0, @"Failed to compare function to its self.");
 
 
-    WHIFunction *function1 = [WHIFunction functionWithBlock:^id<WHIEdgeSet>(id<WHIEdge> edge, NSArray *arguments, NSDictionary *environment, NSError *__autoreleasing *error) {
+    WHIFunction *function1 = [WHIFunction functionWithBlock:^id<WHIWalkSet>(id<WHIWalk> walk, NSArray *arguments, NSDictionary *environment, NSError *__autoreleasing *error) {
         return nil;
     }];
-    WHIFunction *function2 = [WHIFunction functionWithBlock:^id<WHIEdgeSet>(id<WHIEdge> edge, NSArray *arguments, NSDictionary *environment, NSError *__autoreleasing *error) {
+    WHIFunction *function2 = [WHIFunction functionWithBlock:^id<WHIWalkSet>(id<WHIWalk> walk, NSArray *arguments, NSDictionary *environment, NSError *__autoreleasing *error) {
         return nil;
     }];
     XCTAssertNotEqualObjects(function1, function2, @"Function objects incorrectl compared as equal.");
@@ -51,14 +52,22 @@
 
 -(void)testExecute
 {
-    __block BOOL didExecute = NO;
-    WHIFunction *function = [WHIFunction functionWithBlock:^id<WHIEdgeSet>(id<WHIEdge> edge, NSArray *arguments, NSDictionary *environment, NSError *__autoreleasing *error) {
-        didExecute = YES;
-        return nil;
+    WHIWalkSet *walkSet = [WHIWalkSet walkSetWithWalkToDestinationObject:nil label:nil preceedingWalk:nil];
+    id<WHIWalk> walk = [walkSet.walks anyObject];
+    NSArray *arguments = @[@"arf"];
+    NSDictionary *enviornment = @{@"BOOL" : @YES};
+    NSError *error = [NSError new];
+
+    WHIFunction *function = [WHIFunction functionWithBlock:^id<WHIWalkSet>(id<WHIWalk> fWalk, NSArray *fArguments, NSDictionary *fEnvironment, NSError *__autoreleasing *fError) {
+        XCTAssertEqualObjects(fWalk, walk, @"Failed to pass parameter to block");
+        XCTAssertEqualObjects(fArguments, arguments, @"Failed to pass parameter to block");
+        XCTAssertEqualObjects(fEnvironment, enviornment, @"Failed to pass parameter to block");
+        XCTAssertEqualObjects(error, *fError, @"Failed to pass parameter to block");
+        return walkSet;
     }];
 
-    [function executeWithEdge:nil arguments:nil environment:nil error:NULL];
-    XCTAssertTrue(didExecute, @"Function failed to execute.");
+    id result = [function executeWithWalk:walk arguments:arguments environment:enviornment error:&error];
+    XCTAssertEqualObjects(result, walkSet, @"Failed to return expect object from execution.");
 }
 
 @end
