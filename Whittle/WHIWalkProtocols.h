@@ -18,9 +18,13 @@
 
 @protocol WHIWalk <NSObject>
 
--(id)destinationObject;
--(id<WHIWalk>)preceedingWalk;
+-(id)sourceObject;
 -(id)label;
+-(id)destinationObject;
+
+-(id<WHIWalk>)preceedingWalk;
+
+-(BOOL)containsCycle;
 
 @end
 

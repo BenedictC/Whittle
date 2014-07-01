@@ -30,7 +30,7 @@
 
  @return An object conforming to WHIWalkSet.
  */
-typedef id<WHIWalkSet> (^WHIFunctionBlock)(id<WHIWalk> edge, NSArray *arguments, NSDictionary *environment, NSError **error);
+typedef id<WHIWalkSet> (^WHIFunctionBlock)(id<WHIWalkSet> walks, NSArray *arguments, NSDictionary *environment, NSError **error);
 
 
 
@@ -42,7 +42,7 @@ typedef id<WHIWalkSet> (^WHIFunctionBlock)(id<WHIWalk> edge, NSArray *arguments,
 -(instancetype)initWithBlock:(WHIFunctionBlock)block;
 @property(nonatomic, copy, readonly) WHIFunctionBlock block;
 
--(id<WHIWalkSet>)executeWithWalk:(id<WHIWalk>)edge arguments:(NSArray *)arguments environment:(NSDictionary *)environment error:(NSError **)outError;
+-(id<WHIWalkSet>)executeWithWalk:(id<WHIWalkSet>)walkSet arguments:(NSArray *)arguments environment:(NSDictionary *)environment error:(NSError **)outError;
 
 @end
 
@@ -60,7 +60,7 @@ typedef id<WHIWalkSet> (^WHIFunctionBlock)(id<WHIWalk> edge, NSArray *arguments,
  An operation that returns the preceeding node, i.e. path.preceedingWalk
  Arguments form: nil
  */
-+(WHIFunction *)preceedingNodeFunction; //Returns the preceeding node in the path.
++(WHIFunction *)preceedingNodesFunction; //Returns the preceeding node in the path.
 
 //TODO: Document what the arguments are for the operations
 #pragma mark Navigating forwards

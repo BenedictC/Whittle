@@ -9,6 +9,8 @@
 #import "WHIInvocation.h"
 #import "WHIFunction.h"
 #import "WHIWalkSet.h"
+#import "WHIError.h"
+
 
 
 @implementation WHIInvocationVariableArgument
@@ -81,14 +83,6 @@
 #pragma mark - invocation
 -(id<WHIWalkSet>)invokeWithWalkSet:(id<WHIWalkSet>)inputWalkSet environment:(NSDictionary *)environment error:(NSError **)outError
 {
-    //Resolve the function reference
-    WHIFunction *function = environment[self.functionName];
-    if (function == NULL) {
-        NSString *description = [NSString stringWithFormat:@"Function not found for binding named %@", self.functionName];
-        if (outError != NULL) *outError = [NSError errorWithDomain:@"" code:0 userInfo:@{NSLocalizedDescriptionKey: description}];
-        return nil;
-    }
-
     //Resolve variable
     NSMutableArray *resolvedArguments = [NSMutableArray new];
     for (id argument in self.arguments) {
@@ -96,25 +90,20 @@
         id value = (isVariable) ? environment[[argument variableName]] : argument;
         if (value == nil) {
             //TODO: Unable to resolve variable
-            if (outError != NULL) *outError = [NSError errorWithDomain:NSCocoaErrorDomain code:0 userInfo:nil];
+            if (outError != NULL) *outError = [NSError errorWithDomain:WHIWhittleErrorDomain code:0 userInfo:nil];
             return nil;
         }
         [resolvedArguments addObject:value];
     }
 
-    //Create output values
-    WHIWalkSet *outputWalkSet = [WHIWalkSet new];
-    //Apply the function to each inputWalk and sum the results
-    for (id<WHIWalk> inputWalk in inputWalkSet) {
-
-        WHIWalkSet *subOutputWalkSet = [function executeWithWalk:inputWalk arguments:resolvedArguments environment:environment error:outError];
-        BOOL didError = (subOutputWalkSet == nil);
-        if (didError) return nil;
-
-        [outputWalkSet addWalksFromWalkSet:subOutputWalkSet];
+    //Resolve and execute the function
+    WHIFunction *function = environment[self.functionName];
+    if (function == NULL) {
+        NSString *description = [NSString stringWithFormat:@"Function not found for binding named %@", self.functionName];
+        if (outError != NULL) *outError = [NSError errorWithDomain:WHIWhittleErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey: description}];
+        return nil;
     }
-
-    return outputWalkSet;
+    return [function executeWithWalk:inputWalkSet arguments:resolvedArguments environment:environment error:outError];
 }
 
 

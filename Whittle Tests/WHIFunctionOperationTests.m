@@ -44,8 +44,8 @@
 
 -(void)testPreceedingNodeOperation
 {
-    WHIFunction *function1 = [WHIFunction preceedingNodeFunction];
-    WHIFunction *function2 = [WHIFunction preceedingNodeFunction];
+    WHIFunction *function1 = [WHIFunction preceedingNodesFunction];
+    WHIFunction *function2 = [WHIFunction preceedingNodesFunction];
     XCTAssertEqualObjects(function1, function2, @"Class method failed to return same object.");
     XCTFail(@"TODO");
     //TODO: Test functionality of function

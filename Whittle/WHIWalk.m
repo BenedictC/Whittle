@@ -45,6 +45,27 @@
 
 
 
+-(id)sourceObject
+{
+    return self.preceedingWalk.destinationObject;
+}
+
+
+
+-(BOOL)containsCycle
+{
+    id <WHIWalk> walk = self.preceedingWalk;
+    while (walk != nil) {
+        if ([walk.destinationObject isEqual:self.destinationObject] && [walk.sourceObject isEqual:self.sourceObject]) return YES;
+        walk = walk.preceedingWalk;
+    }
+    //TODO: Should recurse of self.preceedingWalk?
+
+    return NO;
+}
+
+
+
 #pragma mark - equality
 -(BOOL)isEqual:(WHIWalk *)object
 {

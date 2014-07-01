@@ -24,7 +24,7 @@
     dispatch_once(&onceToken, ^{
         defaultEnvironment = @{
                             @"root":       [WHIFunction rootNodeFunction],
-                            @"preceeding": [WHIFunction preceedingNodeFunction],
+                            @"preceeding": [WHIFunction preceedingNodesFunction],
                             @"endpoints":  [WHIFunction endpointNodesFunction],
                             @"all":        [WHIFunction allNodesFunction],
                             @"pick":       [WHIFunction pickFunction],

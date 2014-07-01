@@ -19,19 +19,21 @@
     static dispatch_once_t onceToken;
     static WHIFunction *function = nil;
     dispatch_once(&onceToken, ^{
-        function = [WHIFunction functionWithBlock:(^WHIWalkSet *(id<WHIWalk> walk, NSArray *unionArguments, NSDictionary *environment, NSError **outError){
-            WHIWalkSet *outputWalkSet = [WHIWalkSet new];
+        function = [WHIFunction functionWithBlock:(^WHIWalkSet *(id<WHIWalkSet> walkSet, NSArray *unionArguments, NSDictionary *environment, NSError **outError){
+            WHIWalkSet *output = [WHIWalkSet new];
 
-            for (NSArray *invocationList in unionArguments) {
-                WHIWalkSet *rootWalkSet = [WHIWalkSet walkSetWithWalk:walk];
-                WHIWalkSet *childWalkSet = [WHIInvocation executeInvocationList:invocationList edgeSet:rootWalkSet environment:environment error:outError];
-                BOOL didError = (childWalkSet == nil);
-                if (didError) return nil;
+            for (id<WHIWalk> walk in walkSet) {
 
-                [outputWalkSet addWalksFromWalkSet:childWalkSet];
+                for (NSArray *invocationList in unionArguments) {
+                    WHIWalkSet *rootWalkSet = [WHIWalkSet walkSetWithWalk:walk];
+                    WHIWalkSet *childWalkSet = [WHIInvocation executeInvocationList:invocationList edgeSet:rootWalkSet environment:environment error:outError];
+                    BOOL didError = (childWalkSet == nil);
+                    if (didError) return nil;
+
+                    [output addWalksFromWalkSet:childWalkSet];
+                }
             }
-
-            return outputWalkSet;
+            return output;
         })];
     });
     return function;
