@@ -9,6 +9,7 @@
 #import "WHIFunction+SetOperations.h"
 #import "WHIInvocation.h"
 #import "WHIWalkSet.h"
+#import "WHIWalk.h"
 
 
 
@@ -19,10 +20,10 @@
     static dispatch_once_t onceToken;
     static WHIFunction *function = nil;
     dispatch_once(&onceToken, ^{
-        function = [WHIFunction functionWithBlock:(^WHIWalkSet *(id<WHIWalkSet> walkSet, NSArray *unionArguments, NSDictionary *environment, NSError **outError){
+        function = [WHIFunction functionWithBlock:(^WHIWalkSet *(WHIWalkSet *walkSet, NSArray *unionArguments, NSDictionary *environment, NSError **outError){
             WHIWalkSet *output = [WHIWalkSet new];
 
-            for (id<WHIWalk> walk in walkSet) {
+            for (WHIWalk *walk in walkSet) {
 
                 for (NSArray *invocationList in unionArguments) {
                     WHIWalkSet *rootWalkSet = [WHIWalkSet walkSetWithWalk:walk];

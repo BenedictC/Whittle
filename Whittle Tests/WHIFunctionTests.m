@@ -23,7 +23,7 @@
 
 - (void)testInit
 {
-    WHIFunction *function = [[WHIFunction alloc] initWithBlock:^id<WHIWalkSet>(id<WHIWalkSet> walkSet, NSArray *arguments, NSDictionary *environment, NSError *__autoreleasing *error) {
+    WHIFunction *function = [[WHIFunction alloc] initWithBlock:^WHIWalkSet *(WHIWalkSet * walkSet, NSArray *arguments, NSDictionary *environment, NSError *__autoreleasing *error) {
         return nil;
     }];
     XCTAssertNotNil(function, @"Failed to create function with valid input");
@@ -39,10 +39,10 @@
     XCTAssertEqualObjects(function0, function0, @"Failed to compare function to its self.");
 
 
-    WHIFunction *function1 = [WHIFunction functionWithBlock:^id<WHIWalkSet>(id<WHIWalkSet> walkSet, NSArray *arguments, NSDictionary *environment, NSError *__autoreleasing *error) {
+    WHIFunction *function1 = [WHIFunction functionWithBlock:^WHIWalkSet *(WHIWalkSet * walkSet, NSArray *arguments, NSDictionary *environment, NSError *__autoreleasing *error) {
         return nil;
     }];
-    WHIFunction *function2 = [WHIFunction functionWithBlock:^id<WHIWalkSet>(id<WHIWalkSet> walkSet, NSArray *arguments, NSDictionary *environment, NSError *__autoreleasing *error) {
+    WHIFunction *function2 = [WHIFunction functionWithBlock:^WHIWalkSet *(WHIWalkSet * walkSet, NSArray *arguments, NSDictionary *environment, NSError *__autoreleasing *error) {
         return nil;
     }];
     XCTAssertNotEqualObjects(function1, function2, @"Function objects incorrectl compared as equal.");
@@ -58,7 +58,7 @@
     NSDictionary *enviornment = @{@"BOOL" : @YES};
     NSError *error = [NSError new];
 
-    WHIFunction *function = [WHIFunction functionWithBlock:^id<WHIWalkSet>(id<WHIWalkSet> fWalkSet, NSArray *fArguments, NSDictionary *fEnvironment, NSError *__autoreleasing *fError) {
+    WHIFunction *function = [WHIFunction functionWithBlock:^WHIWalkSet *(WHIWalkSet * fWalkSet, NSArray *fArguments, NSDictionary *fEnvironment, NSError *__autoreleasing *fError) {
         XCTAssertEqualObjects(fWalkSet, input, @"Failed to pass parameter to block");
         XCTAssertEqualObjects(fArguments, arguments, @"Failed to pass parameter to block");
         XCTAssertEqualObjects(fEnvironment, enviornment, @"Failed to pass parameter to block");

@@ -8,6 +8,8 @@
 
 #import <XCTest/XCTest.h>
 #import "WHIFunction+SetOperations.h"
+#import "WHIWalkSet.h"
+#import "WHIWalk.h"
 
 
 
@@ -69,27 +71,29 @@
 
 -(void)testEndpointNodesOperation
 {
+    //Function is a singleton
     WHIFunction *function1 = [WHIFunction endpointNodesFunction];
     WHIFunction *function2 = [WHIFunction endpointNodesFunction];
     XCTAssertEqualObjects(function1, function2, @"Class method failed to return same object.");
-    XCTFail(@"TODO");
-    //TODO: Test functionality of function
-    //    WHIWhittle *whittle = [WHIWhittle whittleWithQuery:@"(pick `keynsham`)(endpoints)"];
-    //
-    //    id stLadocRoad = @"St Ladoc Road";
-    //    id parkRoad = @"Park Road";
-    //    id keynshamRoads = @[parkRoad, stLadocRoad];
-    //    id londonRoads = @[@"Southgate Road", @"Stephendale Road"];
-    //    id places = @{@"keynsham":keynshamRoads, @"london":londonRoads};
-    //
-    //    id expectedResult = stLadocRoad;
-    //    id object = places;
-    //
-    //    id<WHIEdgeSet> nodeSet = [whittle executeWithObject:object environment:nil error:NULL];
-    //    id actualResult = [nodeSet lastObject];
-    //
-    //    XCTAssertEqualObjects(actualResult, expectedResult, @"Evaluation failed.");
 
+    //Keyed objects
+    NSDictionary *object = @{@"key1":@"value1",
+                             @"key2":@"value2",
+                             @"key3":@"value3",};
+    WHIWalk *preceedingWalk = [WHIWalk walkWithDestinationObject:object];
+    WHIWalkSet *expectedResult = [WHIWalkSet new];
+    [expectedResult addWalkToDestinationObject:@"value1" label:@"key1" preceedingWalk:preceedingWalk];
+    [expectedResult addWalkToDestinationObject:@"value2" label:@"key2" preceedingWalk:preceedingWalk];
+    [expectedResult addWalkToDestinationObject:@"value3" label:@"key3" preceedingWalk:preceedingWalk];
+
+    NSError *error;
+    id actualResult = [[WHIFunction endpointNodesFunction] executeWithWalk:[WHIWalkSet walkSetWithWalkToDestinationObject:object label:nil preceedingWalk:nil] arguments:@[] environment:@{} error:&error];
+    XCTAssertEqualObjects(actualResult, expectedResult, @"Evaluation failed.");
+
+    //TODO: Index object
+    XCTFail(@"TODO");
+    //TODO: Arbitary object
+    XCTFail(@"TODO");    
 }
 
 
@@ -204,5 +208,3 @@
 }
 
 @end
-
-

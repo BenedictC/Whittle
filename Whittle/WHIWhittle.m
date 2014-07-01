@@ -10,8 +10,17 @@
 #import "WHIInvocation.h"
 #import "WHIFunction+SetOperations.h"
 
+#import "WHIWalk.h"
 #import "WHIWalkSet.h"
 #import "NSScanner+WhittleAdditions.h"
+
+
+#pragma mark - result protocols
+@interface WHIWalk (WhittleResultType) <WHIWalk>
+@end
+
+@interface WHIWalkSet (WhittleResultType) <WHIWalkSet>
+@end
 
 
 

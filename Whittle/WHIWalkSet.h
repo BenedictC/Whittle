@@ -7,7 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "WHIWalkProtocols.h"
+
+@class WHIWalk;
+@class WHIWalkSet;
 
 
 
@@ -17,19 +19,22 @@
 
  */
 
-@interface WHIWalkSet : NSObject <WHIWalkSet>
-
+@interface WHIWalkSet : NSObject <NSFastEnumeration>
 //Factory methods
-+(instancetype)walkSetWithWalkToDestinationObject:(id)object label:(id)label preceedingWalk:(id<WHIWalk>)preceedingWalk;
-+(instancetype)walkSetWithWalk:(id<WHIWalk>)walk;
++(instancetype)walkSetWithWalkToDestinationObject:(id)object label:(id)label preceedingWalk:(WHIWalk *)preceedingWalk;
++(instancetype)walkSetWithWalk:(WHIWalk *)walk;
 
 //Creation
--(id)initWithWalkToDestinationObject:(id)object label:(id)label preceedingWalk:(id<WHIWalk>)preceedingWalk;
--(id)initWithWalk:(id<WHIWalk>)walk; //Designated init
+-(id)initWithWalkToDestinationObject:(id)object label:(id)label preceedingWalk:(WHIWalk *)preceedingWalk;
+-(id)initWithWalk:(WHIWalk *)walk; //Designated init
 
 //Adding edges
--(void)addWalk:(id<WHIWalk>)walk;
--(void)addWalkToDestinationObject:(id)object label:(id)label preceedingWalk:(id<WHIWalk>)preceedingWalk;
--(void)addWalksFromWalkSet:(id<WHIWalkSet>)walkSet;
+-(void)addWalk:(WHIWalk *)walk;
+-(void)addWalkToDestinationObject:(id)object label:(id)label preceedingWalk:(WHIWalk *)preceedingWalk;
+-(void)addWalksFromWalkSet:(WHIWalkSet *)walkSet;
+
+//Properties
+@property(nonatomic, readonly) NSSet *walks;
+@property(nonatomic, readonly) NSSet *objects;
 
 @end

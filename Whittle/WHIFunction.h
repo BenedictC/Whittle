@@ -17,8 +17,6 @@
 
  */
 
-#import "WHIWalkProtocols.h"
-
 
 /**
  Type signature for blocks used in WHIFunction.
@@ -30,7 +28,8 @@
 
  @return An object conforming to WHIWalkSet.
  */
-typedef id<WHIWalkSet> (^WHIFunctionBlock)(id<WHIWalkSet> walks, NSArray *arguments, NSDictionary *environment, NSError **error);
+@class WHIWalkSet;
+typedef WHIWalkSet *(^WHIFunctionBlock)(WHIWalkSet *walkSet, NSArray *arguments, NSDictionary *environment, NSError **error);
 
 
 
@@ -42,7 +41,7 @@ typedef id<WHIWalkSet> (^WHIFunctionBlock)(id<WHIWalkSet> walks, NSArray *argume
 -(instancetype)initWithBlock:(WHIFunctionBlock)block;
 @property(nonatomic, copy, readonly) WHIFunctionBlock block;
 
--(id<WHIWalkSet>)executeWithWalk:(id<WHIWalkSet>)walkSet arguments:(NSArray *)arguments environment:(NSDictionary *)environment error:(NSError **)outError;
+-(WHIWalkSet *)executeWithWalk:(WHIWalkSet *)walkSet arguments:(NSArray *)arguments environment:(NSDictionary *)environment error:(NSError **)outError;
 
 @end
 

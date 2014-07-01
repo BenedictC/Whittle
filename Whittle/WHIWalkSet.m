@@ -20,14 +20,14 @@
 @implementation WHIWalkSet
 
 #pragma mark - factory methods
-+(instancetype)walkSetWithWalkToDestinationObject:(id)object label:(id)label preceedingWalk:(id<WHIWalk>)preceedingWalk
++(instancetype)walkSetWithWalkToDestinationObject:(id)object label:(id)label preceedingWalk:(WHIWalk *)preceedingWalk
 {
     return [[self alloc] initWithWalkToDestinationObject:object label:label preceedingWalk:preceedingWalk];
 }
 
 
 
-+(instancetype)walkSetWithWalk:(id<WHIWalk>)edge
++(instancetype)walkSetWithWalk:(WHIWalk *)edge
 {
     return [[self alloc] initWithWalk:edge];
 }
@@ -35,7 +35,7 @@
 
 
 #pragma mark - instance life cycle
--(id)initWithWalk:(id<WHIWalk>)edge //designated init
+-(id)initWithWalk:(WHIWalk *)edge //designated init
 {
     self = [super init];
     if (self == nil) return nil;
@@ -48,7 +48,7 @@
 
 
 
--(id)initWithWalkToDestinationObject:(id)object label:(id)label preceedingWalk:(id<WHIWalk>)preceedingWalk
+-(id)initWithWalkToDestinationObject:(id)object label:(id)label preceedingWalk:(WHIWalk *)preceedingWalk
 {
     WHIWalk *edge = [[WHIWalk alloc] initWithDestinationObject:object label:label preceedingWalk:preceedingWalk];
     return [self initWithWalk:edge];
@@ -64,6 +64,14 @@
 
 
 #pragma mark - properties
+-(NSString *)description
+{
+    return [NSString stringWithFormat:@"<%@> edges: %p", NSStringFromClass([self class]), self.mutableWalks];
+}
+
+
+
+#pragma mark - WHIWalkSet protocol
 -(NSSet *)walks
 {
     return [self.mutableWalks copy];
@@ -73,14 +81,19 @@
 
 -(NSSet *)objects
 {
-    return [NSSet setWithArray:[self.mutableWalks valueForKeyPath:@"@distinctUnionOfObjects.destinationObject"]];
+    return [self.mutableWalks valueForKeyPath:@"@distinctUnionOfObjects.destinationObject"];
 }
 
 
 
--(NSString *)description
+-(BOOL)isEqual:(WHIWalkSet *)otherWalkSet
 {
-    return [NSString stringWithFormat:@"<%@> edges: %p", NSStringFromClass([self class]), self.mutableWalks];
+    if (![otherWalkSet isKindOfClass:[WHIWalkSet class]]) return NO;
+
+    NSSet *walks = self.walks;
+    NSSet *otherWalks = otherWalkSet.walks;
+
+    return [walks isEqual:otherWalks];
 }
 
 
@@ -94,7 +107,7 @@
 
 
 #pragma mark - adding notes
--(void)addWalkToDestinationObject:(id)object label:(id)label preceedingWalk:(id<WHIWalk>)preceedingWalk
+-(void)addWalkToDestinationObject:(id)object label:(id)label preceedingWalk:(WHIWalk *)preceedingWalk
 {
     WHIWalk *walk = [[WHIWalk alloc] initWithDestinationObject:object label:label preceedingWalk:preceedingWalk];
     [self addWalk:walk];
@@ -102,18 +115,16 @@
 
 
 
--(void)addWalk:(id<WHIWalk>)walk
+-(void)addWalk:(WHIWalk *)walk
 {
     [self.mutableWalks addObject:walk];
 }
 
 
 
--(void)addWalksFromWalkSet:(id<WHIWalkSet>)walkSet
+-(void)addWalksFromWalkSet:(WHIWalkSet *)walkSet
 {
-    NSSet *walks = ([walkSet isKindOfClass:[WHIWalkSet class]]) ? [(WHIWalkSet *)walkSet mutableWalks] : walkSet.walks;
-    
-    [self.mutableWalks addObjectsFromArray:walks.allObjects];
+    [self.mutableWalks addObjectsFromArray:walkSet.mutableWalks.allObjects];
 }
 
 @end

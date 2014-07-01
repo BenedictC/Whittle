@@ -42,7 +42,7 @@
 
 
 #pragma mark - execution
--(id<WHIWalkSet>)executeWithWalk:(id<WHIWalkSet>)walkSet arguments:(NSArray *)arguments environment:(NSDictionary *)environment error:(NSError **)outError
+-(WHIWalkSet *)executeWithWalk:(WHIWalkSet *)walkSet arguments:(NSArray *)arguments environment:(NSDictionary *)environment error:(NSError **)outError
 {
     WHIFunctionBlock block = self.block;
 
@@ -152,14 +152,15 @@ static NSString *keyForValueInDictionary(id value, NSDictionary *dictionary) {
     static dispatch_once_t onceToken;
     static WHIFunction *function = nil;
     dispatch_once(&onceToken, ^{
-        function = [WHIFunction functionWithBlock:(^WHIWalkSet *(id<WHIWalkSet> walkSet, NSArray *arguments, NSDictionary *environment, NSError **outError){
+        function = [WHIFunction functionWithBlock:(^WHIWalkSet *(WHIWalkSet * walkSet, NSArray *arguments, NSDictionary *environment, NSError **outError){
 
-            for (id<WHIWalk> initalWalk in walkSet) {
-                id<WHIWalk> walk = initalWalk;
+            for (WHIWalk * initalWalk in walkSet) {
+                WHIWalk * walk = initalWalk;
                 while (walk.preceedingWalk != nil) walk = walk.preceedingWalk;
 
                 return [WHIWalkSet walkSetWithWalkToDestinationObject:walk.destinationObject label:nil preceedingWalk:nil];
             }
+            //TODO: This must be an error!
             return nil;
         })];
     });
@@ -174,11 +175,11 @@ static NSString *keyForValueInDictionary(id value, NSDictionary *dictionary) {
     static dispatch_once_t onceToken;
     static WHIFunction *function = nil;
     dispatch_once(&onceToken, ^{
-        function = [WHIFunction functionWithBlock:(^WHIWalkSet *(id<WHIWalkSet> input, NSArray *arguments, NSDictionary *environment, NSError **outError){
+        function = [WHIFunction functionWithBlock:(^WHIWalkSet *(WHIWalkSet * input, NSArray *arguments, NSDictionary *environment, NSError **outError){
             WHIWalkSet *output = [WHIWalkSet new];
 
-            for (id<WHIWalk> walk in input) {
-                id<WHIWalk> preceedingWalk = walk.preceedingWalk;
+            for (WHIWalk * walk in input) {
+                WHIWalk * preceedingWalk = walk.preceedingWalk;
                 if (preceedingWalk != nil) [output addWalk:preceedingWalk];
             }
 
@@ -196,11 +197,11 @@ static NSString *keyForValueInDictionary(id value, NSDictionary *dictionary) {
     static dispatch_once_t onceToken;
     static WHIFunction *function = nil;
     dispatch_once(&onceToken, ^{
-        function = [WHIFunction functionWithBlock:(^WHIWalkSet *(id<WHIWalkSet> input, NSArray *arguments, NSDictionary *environment, NSError **outError){
+        function = [WHIFunction functionWithBlock:(^WHIWalkSet *(WHIWalkSet * input, NSArray *arguments, NSDictionary *environment, NSError **outError){
 
             WHIWalkSet *output = [WHIWalkSet new];
 
-            for (id<WHIWalk> walk in input) {
+            for (WHIWalk * walk in input) {
                 id object = walk.destinationObject;
 
                 switch (objectTypeOfObject(object)) {
@@ -250,14 +251,14 @@ static NSString *keyForValueInDictionary(id value, NSDictionary *dictionary) {
     static dispatch_once_t onceToken;
     static WHIFunction *function = nil;
     dispatch_once(&onceToken, ^{
-        function = [WHIFunction functionWithBlock:(^WHIWalkSet *(id<WHIWalkSet> initialWalkSet, NSArray *arguments, NSDictionary *environment, NSError **outError){
+        function = [WHIFunction functionWithBlock:(^WHIWalkSet *(WHIWalkSet * initialWalkSet, NSArray *arguments, NSDictionary *environment, NSError **outError){
 
             WHIWalkSet *output = [WHIWalkSet new];
             NSMutableSet *nodesInOutput = [output.objects mutableCopy]; //Temporary varible to avoid repeatedlt calling output.visitedObjects.
             NSMutableArray *pendingWalks = [initialWalkSet.walks mutableCopy];
             NSMutableSet *exploredNodes = [NSMutableSet new];
 
-            void (^addWalkToOutput)(id<WHIWalk>) = ^(id<WHIWalk>walk){
+            void (^addWalkToOutput)(WHIWalk *) = ^(WHIWalk *walk){
                 BOOL isAlreadyInOutput = [nodesInOutput containsObject:walk.destinationObject];
                 if (isAlreadyInOutput) return;
 
@@ -268,7 +269,7 @@ static NSString *keyForValueInDictionary(id value, NSDictionary *dictionary) {
             //Explore pendingWalks to discover all nodes
             while ([pendingWalks count] > 0) {
                 //dequeue a walk and get its' node
-                id<WHIWalk> walk = pendingWalks[0];
+                WHIWalk * walk = pendingWalks[0];
                 [pendingWalks removeObjectAtIndex:0];
 
                 //If the node has already been explored then doing so again would create infinite cycles.
@@ -280,11 +281,11 @@ static NSString *keyForValueInDictionary(id value, NSDictionary *dictionary) {
                 addWalkToOutput(walk);
 
                 //Get all the edges that start from node.
-                id<WHIWalkSet> endpoints = [[WHIFunction endpointNodesFunction] executeWithWalk:[WHIWalkSet walkSetWithWalk:walk] arguments:arguments environment:environment error:outError];
+                WHIWalkSet * endpoints = [[WHIFunction endpointNodesFunction] executeWithWalk:[WHIWalkSet walkSetWithWalk:walk] arguments:arguments environment:environment error:outError];
                 if (endpoints == nil) return nil; //There was an error. endpointNodesFunction will have created the error object.
 
                 //Enqueue each endpoint and conditionally add it to the output.
-                for (id<WHIWalk> endpoint in endpoints) {
+                for (WHIWalk * endpoint in endpoints) {
                     [pendingWalks addObject:endpoint]; //We could make walk depth-first by prepending to pendingWalks.
                     addWalkToOutput(endpoint);
                 }
@@ -305,10 +306,10 @@ static NSString *keyForValueInDictionary(id value, NSDictionary *dictionary) {
     static dispatch_once_t onceToken;
     static WHIFunction *function = nil;
     dispatch_once(&onceToken, ^{
-        function = [WHIFunction functionWithBlock:(^WHIWalkSet *(id<WHIWalkSet> walkSet, NSArray *arguments, NSDictionary *environment, NSError **outError){
+        function = [WHIFunction functionWithBlock:(^WHIWalkSet *(WHIWalkSet * walkSet, NSArray *arguments, NSDictionary *environment, NSError **outError){
             WHIWalkSet *output = [WHIWalkSet new];
 
-            for (id<WHIWalk> walk in walkSet) {
+            for (WHIWalk * walk in walkSet) {
 
                 id object = walk.destinationObject;
                 for (id subscript in arguments) {
@@ -365,9 +366,9 @@ static NSString *keyForValueInDictionary(id value, NSDictionary *dictionary) {
     static dispatch_once_t onceToken;
     static WHIFunction *function = nil;
     dispatch_once(&onceToken, ^{
-        function = [WHIFunction functionWithBlock:(^WHIWalkSet *(id<WHIWalkSet> walkSet, NSArray *arguments, NSDictionary *environment,  NSError **outError){
+        function = [WHIFunction functionWithBlock:(^WHIWalkSet *(WHIWalkSet * walkSet, NSArray *arguments, NSDictionary *environment,  NSError **outError){
             WHIWalkSet *output = [WHIWalkSet new];
-            for (id<WHIWalk> walk in walkSet) {
+            for (WHIWalk * walk in walkSet) {
                 //Unpack arguments
                 //TODO: Convert these asserts to NSErrors
                 NSCAssert(arguments.count == 1, @"Incorrect number of arguments. Filter expects arguments of type: [string].");
@@ -428,7 +429,7 @@ static NSString *keyForValueInDictionary(id value, NSDictionary *dictionary) {
     static dispatch_once_t onceToken;
     static WHIFunction *function = nil;
     dispatch_once(&onceToken, ^{
-        function = [WHIFunction functionWithBlock:(^WHIWalkSet *(id<WHIWalkSet> walkSet, NSArray *arguments, NSDictionary *environment, NSError **outError){
+        function = [WHIFunction functionWithBlock:(^WHIWalkSet *(WHIWalkSet * walkSet, NSArray *arguments, NSDictionary *environment, NSError **outError){
             return walkSet;
         })];
     });
@@ -442,7 +443,7 @@ static NSString *keyForValueInDictionary(id value, NSDictionary *dictionary) {
     static dispatch_once_t onceToken;
     static WHIFunction *function = nil;
     dispatch_once(&onceToken, ^{
-        function = [WHIFunction functionWithBlock:(^WHIWalkSet *(id<WHIWalkSet> walkSet, NSArray *arguments, NSDictionary *environment, NSError **outError){
+        function = [WHIFunction functionWithBlock:(^WHIWalkSet *(WHIWalkSet * walkSet, NSArray *arguments, NSDictionary *environment, NSError **outError){
             return [WHIWalkSet new];
         })];
     });
@@ -457,7 +458,7 @@ static NSString *keyForValueInDictionary(id value, NSDictionary *dictionary) {
     static dispatch_once_t onceToken;
     static WHIFunction *function = nil;
     dispatch_once(&onceToken, ^{
-        function = [WHIFunction functionWithBlock:(^WHIWalkSet *(id<WHIWalkSet> walkSet, NSArray *arguments, NSDictionary *environment, NSError **outError){
+        function = [WHIFunction functionWithBlock:(^WHIWalkSet *(WHIWalkSet * walkSet, NSArray *arguments, NSDictionary *environment, NSError **outError){
             if (outError != NULL) *outError = [NSError errorWithDomain:WHIWhittleErrorDomain code:0 userInfo:nil];
             return nil;
         })];

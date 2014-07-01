@@ -12,11 +12,26 @@
 
 @implementation WHIWalk
 
+#pragma mark - factory method
++(instancetype)walkWithDestinationObject:(id)object
+{
+    return [[self alloc] initWithDestinationObject:object label:nil preceedingWalk:nil];
+}
+
+
+
++(instancetype)walkWithDestinationObject:(id)object label:(id)label preceedingWalk:(WHIWalk *)preceedingWalk
+{
+    return [[self alloc] initWithDestinationObject:object label:label preceedingWalk:preceedingWalk];
+}
+
+
+
 #pragma mark - instance life cycle
--(id)initWithDestinationObject:(id)object label:(id)label preceedingWalk:(id<WHIWalk>)preceedingWalk
+-(id)initWithDestinationObject:(id)object label:(id)label preceedingWalk:(WHIWalk *)preceedingWalk
 {
     NSParameterAssert(object);
-    NSAssert(preceedingWalk == nil || [preceedingWalk conformsToProtocol:@protocol(WHIWalk)], @"preceedingWalk does not conform to WHIWalk");
+    NSAssert(!(label == nil ^ preceedingWalk == nil), @"Invalid label/preceedingWalk combination. If a preceedingWalk is provided then so must a label and vice versa. label = %@, preceedingWalk = %@", label, preceedingWalk);
     
     self = [super init];
     if (self == nil) return nil;
@@ -54,7 +69,7 @@
 
 -(BOOL)containsCycle
 {
-    id <WHIWalk> walk = self.preceedingWalk;
+    WHIWalk *walk = self.preceedingWalk;
     while (walk != nil) {
         if ([walk.destinationObject isEqual:self.destinationObject] && [walk.sourceObject isEqual:self.sourceObject]) return YES;
         walk = walk.preceedingWalk;
@@ -67,9 +82,9 @@
 
 
 #pragma mark - equality
--(BOOL)isEqual:(WHIWalk *)object
+-(BOOL)isEqual:(WHIWalk *)otherWalk
 {
-    if (![object isKindOfClass:[WHIWalk class]]) return NO;
+    if (![otherWalk isKindOfClass:[WHIWalk class]]) return NO;
 
     BOOL (^isEqualObjects)(id object1, id object2) = ^BOOL(id object1, id object2){
         if (object1 == nil && object2 != nil) return NO;
@@ -79,8 +94,8 @@
         return YES;
     };
 
-    if (!isEqualObjects(self.destinationObject, object.destinationObject)) return NO;
-    if (!isEqualObjects(self.label, object.label)) return NO;
+    if (!isEqualObjects(self.destinationObject, otherWalk.destinationObject)) return NO;
+    if (!isEqualObjects(self.label, otherWalk.label)) return NO;
     //We have to check the complete walk not just the final edge because the graph could contain multiple identical
     //sub-graphs. EG:
     // NSDictionary *address = @{@"city": @"London"};
@@ -90,7 +105,7 @@
     //if we then performed:
     //(all)(filter `$EDGE_NAME` == 'address' && $VALUE.city == 'London')(preeceeding)
     //We'd only get one personas a result because `filter` would have deemed the to address matches as equal.
-    if (!isEqualObjects(self.preceedingWalk, object.preceedingWalk)) return NO;
+    if (!isEqualObjects(self.preceedingWalk,otherWalk.preceedingWalk)) return NO;
 
     return YES;
 }
@@ -103,4 +118,3 @@
 }
 
 @end
-

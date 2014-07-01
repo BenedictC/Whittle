@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "WHIWalkProtocols.h"
 
 
 
@@ -17,11 +16,16 @@
 
  */
 
-@interface WHIWalk : NSObject <WHIWalk>
+@interface WHIWalk : NSObject
++(instancetype)walkWithDestinationObject:(id)object;
++(instancetype)walkWithDestinationObject:(id)object label:(id)label preceedingWalk:(WHIWalk *)preceedingWalk;
 
--(id)initWithDestinationObject:(id)object label:(id)label preceedingWalk:(id<WHIWalk>)preceedingWalk;
-@property(nonatomic, readonly) id destinationObject;
+-(id)initWithDestinationObject:(id)object label:(id)label preceedingWalk:(WHIWalk *)preceedingWalk;
+@property(nonatomic, readonly, weak) id destinationObject;
 @property(nonatomic, readonly) id label;
-@property(nonatomic, readonly) id<WHIWalk> preceedingWalk;
+@property(nonatomic, readonly) WHIWalk *preceedingWalk;
+@property(nonatomic, readonly) id sourceObject;
+
+-(BOOL)containsCycle;
 
 @end

@@ -96,7 +96,7 @@
 		82932F2917A26EAE009AC871 /* BENViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BENViewController.m; sourceTree = "<group>"; };
 		82932F2C17A26EAE009AC871 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/BENViewController.xib; sourceTree = "<group>"; };
 		82932F3417A26EAE009AC871 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
-		829787D017C0D44300AF9B4A /* WHIWalkProtocols.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WHIWalkProtocols.h; sourceTree = "<group>"; };
+		829787D017C0D44300AF9B4A /* WHIWhittleResultsProtocols.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WHIWhittleResultsProtocols.h; sourceTree = "<group>"; };
 		829787D117C0D47100AF9B4A /* WHIWalk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WHIWalk.h; sourceTree = "<group>"; };
 		829787D217C0D47100AF9B4A /* WHIWalk.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WHIWalk.m; sourceTree = "<group>"; };
 		829787D417C0DA1400AF9B4A /* WHIWhittle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = WHIWhittle.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
@@ -257,7 +257,6 @@
 			children = (
 				8217098B19601C970052DCDC /* WHIError.h */,
 				8217098C19601C970052DCDC /* WHIError.m */,
-				829787D017C0D44300AF9B4A /* WHIWalkProtocols.h */,
 				829787D117C0D47100AF9B4A /* WHIWalk.h */,
 				829787D217C0D47100AF9B4A /* WHIWalk.m */,
 				826D35B517AF9F9F00F74FE7 /* WHIWalkSet.h */,
@@ -270,6 +269,7 @@
 				8292CD9417AC0C7E00B0B678 /* WHIInvocation.m */,
 				829787D417C0DA1400AF9B4A /* WHIWhittle.h */,
 				829787D517C0DA1400AF9B4A /* WHIWhittle.m */,
+				829787D017C0D44300AF9B4A /* WHIWhittleResultsProtocols.h */,
 				82AC574A195DF63B00DEE12D /* Parsing additions */,
 			);
 			name = Whittle;

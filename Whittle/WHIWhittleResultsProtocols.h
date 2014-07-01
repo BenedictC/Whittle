@@ -1,5 +1,5 @@
 //
-//  WHIWalkProtocols.h
+//  WHIWhittleResultsProtocols.h.h
 //  Whittle
 //
 //  Created by Benedict Cohen on 18/08/2013.
@@ -21,10 +21,7 @@
 -(id)sourceObject;
 -(id)label;
 -(id)destinationObject;
-
 -(id<WHIWalk>)preceedingWalk;
-
--(BOOL)containsCycle;
 
 @end
 
@@ -40,6 +37,7 @@
 
 -(NSSet *)walks;
 
--(NSSet *)objects; //Destinations of the edges
+-(NSSet *)objects; //Destinations of the edges. Convienince method for collection .destinationObject of all .walks.
 
 @end
+

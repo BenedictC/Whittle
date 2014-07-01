@@ -81,7 +81,7 @@
 
 
 #pragma mark - invocation
--(id<WHIWalkSet>)invokeWithWalkSet:(id<WHIWalkSet>)inputWalkSet environment:(NSDictionary *)environment error:(NSError **)outError
+-(WHIWalkSet *)invokeWithWalkSet:(WHIWalkSet *)inputWalkSet environment:(NSDictionary *)environment error:(NSError **)outError
 {
     //Resolve variable
     NSMutableArray *resolvedArguments = [NSMutableArray new];
@@ -109,7 +109,7 @@
 
 
 #pragma mark - invocation list
-+(id<WHIWalkSet>)executeInvocationList:(NSArray *)invocations edgeSet:(id<WHIWalkSet>)inputWalkSet environment:(NSDictionary *)environment error:(NSError **)outError
++(WHIWalkSet *)executeInvocationList:(NSArray *)invocations edgeSet:(WHIWalkSet *)inputWalkSet environment:(NSDictionary *)environment error:(NSError **)outError
 {
     //Invoke the function on every object return by the previous function.
     WHIWalkSet *preceedingWalkSet = inputWalkSet;
